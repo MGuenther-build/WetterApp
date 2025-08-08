@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3-Tage-Wettervorhersage</title>
+    <link rel="stylesheet" href="static/Pics.css">
+    <link rel="stylesheet" href="static/Styles.css">
+    <link rel="stylesheet" href="static/eingabemaske.css">
+    <script src="{{ url_for('static', filename='js_styles.js') }}" defer></script>
+</head>
+
+<body>
+    <nav class="topbar">
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('wetterarchiv')}}">Wetterarchiv</a></li>
+            <li><a href="{{ url_for('impressum') }}">Impressum</a></li>
+        </ul>
+    </nav>
+    <div class="main-wrapper-subsites fade">
+        <main class="content">
+            <h1 class="banner-vorhersage">3-Tage-Wetter</h1>
+            <form method="POST" action= {{ url_for('wettervorhersage_3_Tage') }}>
+                <div class="wettervorhersage-container fade">
+                    <input type="text" name="stadt" id="stadt" class="input-wettervorhersage"placeholder="z.B. Tokyo" required value="{{ stadt or '' }}" title="Bitte englische Ortsnamen verwenden!">
+                    <button type="submit" class="button-wettervorhersage">Ok</button>
+                </div>
+            </form>
+        <div class="output fade">
+            {% if daten %}
+            {% set tage = {} %}
+            {% for eintrag in daten %}
+                {% set tag = eintrag.drei_tage %}
+                {% if tag not in tage %}
+                    {% set _ = tage.update({tag: []}) %}
+                {% endif %}
+                {% set _ = tage[tag].append(eintrag) %}
+            {% endfor %}
+            <div class="forecast-grid" id="scroll-forecast">
+                {% for tag, eintraege in tage.items() %}
+                    <div class="forecast-columns">
+                        <h3>
+                            <img src="{{ url_for('static', filename='Vorhersage.png')}}" alt="Wettericon" class="symbol">
+                            {{ tag }}
+                        </h3>
+
+                        <!-- For-Schleife für Max/Min -->
+                        {% set max_min_liste = [] %}
+                        {% for eintrag in eintraege %}
+                        {% set _ = max_min_liste.append(eintrag.main.temp) %}
+                        {% endfor %}
+                        {% set max_temp = max_min_liste | max | round | int %}
+                        {% set min_temp = max_min_liste | min | round | int %}
+
+                        {% set max_class =
+                            'temp-sehrkalt' if max_temp < -10 else
+                            'temp-kalt'     if max_temp <= 0 else
+                            'temp-kuehl'    if max_temp < 10 else
+                            'temp-maessig'  if max_temp < 15 else
+                            'temp-mild'     if max_temp < 20 else
+                            'temp-warm'     if max_temp < 25 else
+                            'temp-sehrwarm' if max_temp < 30 else
+                            'temp-heiss'    if max_temp < 40 else
+                            'temp-sehrheiss'
+                        %}
+
+                        {% set min_class =
+                            'temp-sehrkalt' if min_temp < -10 else
+                            'temp-kalt'     if min_temp <= 0 else
+                            'temp-kuehl'    if min_temp < 10 else
+                            'temp-maessig'  if min_temp < 15 else
+                            'temp-mild'     if min_temp < 20 else
+                            'temp-warm'     if min_temp < 25 else
+                            'temp-sehrwarm' if min_temp < 30 else
+                            'temp-heiss'    if min_temp < 40 else
+                            'temp-sehrheiss'
+                        %}
+
+                        <p class="{{ max_class }}">{{ max_temp }}°C</p>
+                        <div class="trennstrich"></div>
+                        <p class="{{ min_class }}">{{ min_temp }}°C</p>
+
+                        <!-- Charts.js -->
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <canvas id="tempChart-{{ tag }}" width="300" height="150"></canvas>
+                        <script>
+                        window.addEventListener('load', function() {
+                            const tags = {{ tage | tojson }};
+                            Object.keys(tags).forEach(function(tag, index) {
+                                const ctx = document.getElementById('tempChart-' + tag).getContext('2d');
+                                new Chart(ctx, {
+                                    type: 'line',
+                                    data: {
+                                        labels: tags[tag].map(e => e.local_time.substring(11, 16)),
+                                        datasets: [{
+                                            label: 'Temperatur (°C)',
+                                            data: tags[tag].map(e => Math.round(e.main.temp)),
+                                            borderColor: '#FF9900',
+                                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                            tension: 0.3,
+                                            pointRadius: 5,
+                                            pointHoverRadius: 7,
+                                            pointBackgroundColor: '#2B1B04',
+                                            }]
+                                    },
+                                    options: {
+                                        plugins: {
+                                            tooltip: {
+                                                callbacks: {
+                                                    label: function(context) {
+                                                        const index = context.dataIndex;
+                                                        const eintrag = tags[tag][index];
+                                                        return [
+                                                            `Temperatur: ${Math.round(eintrag.main.temp)}°C`,
+                                                            `Luftfeuchtigkeit: ${eintrag.main.humidity}%`,
+                                                            `gefühlte Temperatur: ${Math.round(eintrag.main.feels_like)}°C`
+                                                        ];
+                                                    }
+                                                }
+                                            },
+                                            legend: { display: false }
+                                        },
+                                        scales: {
+                                            x: { title: { display: true, text: 'Uhrzeit (Ortszeit)' } },
+                                            y: { title: { display: true, text: 'Temperatur (°C)' } }
+                                        }
+                                    }
+                                });
+                            });
+                        });
+                        </script>
+                        <div class="weather-timeline">
+                            {% for eintrag in eintraege %}
+                                <div class="weather-point">
+                                <img src="https://openweathermap.org/img/wn/{{ eintrag.weather[0].icon }}.png" alt="Wettericon für {{ eintrag.weather[0].description }}" title="{{ eintrag.weather[0].description }}">
+                                <span class="weather-time">{{ eintrag.local_time[11:16] }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Script für automatisches Scrollen zur Ausgabe -->
+            <script>window.addEventListener('load', function () {
+                const forecastSection = document.getElementById('scroll-forecast');
+                if (forecastSection) {
+                    forecastSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            </script>
+        <br>
+        <br>
+        </main>
+    </div>
+{% elif fehler %}
+    <p>Fehler: {{ fehler }}</p>
+{% endif %}
+    </div>
+</body>
+</html>
