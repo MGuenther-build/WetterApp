@@ -3,8 +3,10 @@ from flask import request
 from flask import jsonify
 from datetime import datetime, timedelta, UTC
 from WetterAPI_Backend import get_daten
+from station_def import get_stations, get_wetter
 import pandas
 #import json
+
 
 
 app = Flask(__name__)
@@ -17,7 +19,8 @@ def home():
 # Wetterarchiv - Hauptelemente
 @app.route("/Wetterarchiv")
 def wetterarchiv():
-    stationen = pandas.read_csv(r"C:\Users\Proto\Desktop\Programmierer\Programmieren\Großprojekte\3. Wetter API\Wetterdaten\data\stations.txt", skiprows=17)
+    stationenpfad = get_stations()
+    stationen = pandas.read_csv(stationenpfad, skiprows=17)
     stationen.columns = stationen.columns.str.strip()
     stationen = stationen[["STAID", "STANAME"]]
     stationen = stationen.sort_values("STANAME")
@@ -33,7 +36,7 @@ def wetterarchiv():
 # Wetterarchiv - Backend-Routine für Temperatur pro Tag
 @app.route("/api/v1/<station>/<date>")
 def temperatur(station, date):
-    wetterdaten = r"C:\Users\Proto\Desktop\Programmierer\Programmieren\Großprojekte\3. Wetter API\Wetterdaten\data\TG_STAID" + str(station).zfill(6) + ".txt"
+    wetterdaten = get_wetter(station)
     df = pandas.read_csv(wetterdaten, skiprows=20, parse_dates=["    DATE"])
     temperatur_als_serie = df.loc[df["    DATE"] == date] ["   TG"]
     if temperatur_als_serie.empty:

@@ -1,6 +1,11 @@
 import requests
 import logging
 from datetime import datetime, timedelta, timezone
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+API_KEY = os.getenv("API_KEY")
 
 
 def erlaubte_tage(timezone_offset):
@@ -22,10 +27,6 @@ def heute_morgen_uebermorgen(timestamp, timezone_offset):
         return ("Morgen")
     elif datum == heute + timedelta(days=2):
         return ("Übermorgen")
-
-
-
-API_KEY = "b49a52e3ba1f105511c4e2740956c1ed"
 
 def get_daten(Stadt_waehlen, Tage_der_Vorhersage=None):
     try:
