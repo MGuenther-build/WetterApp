@@ -1,23 +1,26 @@
 
 html {
+  height: 100%;
+  width: 100%;
+  background: url('../static/Wetter_Wallpaper.webp') no-repeat center center fixed;
+  background-size: 100% 100%;
   overflow-y: scroll;
 }
 
 body {
+  display: flex;
+  min-height: 100vh;
   margin: 0;
   font-family: "Winky Rough";
-  background: url('../static/Wetter_Wallpaper.png') no-repeat center center fixed;
+  background: url('../static/Wetter_Wallpaper.webp') no-repeat center center fixed;
   background-size: 100% 100%;
   box-sizing: border-box;
-  display: flex;
   flex-direction: column;
-  height: 100vh;
 }
 
 .main-wrapper {
+  min-height: 90vh;
   font-weight: 500;
-  padding-top: 0.6em;
-  height: 100vh;
   box-sizing: border-box;
   text-align: center;
 }
@@ -48,12 +51,14 @@ body {
 
 
 .main-wrapper-subsites {
+  min-height: 90vh;
   font-weight: 500;
-  padding-top: 3.125em;
-  height: 100vh;
+  padding-top: 3.125rem;
   box-sizing: border-box;
   text-align: center;
 }
+
+
 
 /* Anpassung Wetterarchiv Chart */
 #chart {
