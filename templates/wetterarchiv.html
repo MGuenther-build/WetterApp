@@ -176,5 +176,9 @@
             die seit 1860 bis 2022 Messungen vornahmen. <br>Einige von ihnen sind schon lange nicht mehr in Betrieb, andere waren nur wenige Jahre in Betrieb oder immer mal wieder (doppelte Einträge!).
         </main>
     </div>
+{% if fehler %}
+    <p>Fehler: {{ fehler }}</p>
+{% endif %}
+    </div>
 </body>
 </html>

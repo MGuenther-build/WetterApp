@@ -19,18 +19,22 @@ def home():
 # Wetterarchiv - Hauptelemente
 @app.route("/Wetterarchiv")
 def wetterarchiv():
-    stationenpfad = get_stations()
-    stationen = pandas.read_csv(stationenpfad, skiprows=17)
-    stationen.columns = stationen.columns.str.strip()
-    stationen = stationen[["STAID", "STANAME"]]
-    stationen = stationen.sort_values("STANAME")
-    stationen_liste = stationen.to_dict(orient="records")
-    stationen_html = stationen.to_html(index=False)                         # Index=False, weil sonst Pandas Dataframe links eine ID-Spalte setzt
-    jahre = list(range(1860,2022))
-    return render_template ("wetterarchiv.html",
-                            tabelle=stationen_html,
-                            stationen=stationen_liste,
-                            jahre=jahre)
+    try:
+        stationenpfad = get_stations()
+        stationen = pandas.read_csv(stationenpfad, skiprows=17)
+        stationen.columns = stationen.columns.str.strip()
+        stationen = stationen[["STAID", "STANAME"]]
+        stationen = stationen.sort_values("STANAME")
+        stationen_liste = stationen.to_dict(orient="records")
+        stationen_html = stationen.to_html(index=False)                         # Index=False, weil sonst Pandas Dataframe links eine ID-Spalte setzt
+        jahre = list(range(1860,2022))
+        return render_template ("wetterarchiv.html",
+                                tabelle=stationen_html,
+                                stationen=stationen_liste,
+                                jahre=jahre)
+    except Exception as e:
+        return render_template("wetterarchiv.html", fehler=str(e))
+        
 
 
 # Wetterarchiv - Backend-Routine für Temperatur pro Tag
@@ -60,20 +64,29 @@ def temperatur(station, date):
 # Wetterarchiv - Backend-Routine für Wetterstation
 @app.route("/api/v1/<station>")
 def alle_daten_einer_station(station):
-    wetterdaten = r"C:\Users\Proto\Desktop\Programmierer\Programmieren\Großprojekte\3. Wetter API\Wetterdaten\data\TG_STAID" + str(station).zfill(6) + ".txt"
-    df = pandas.read_csv(wetterdaten, skiprows=20, parse_dates=["    DATE"])
-    alle_daten = df.to_dict(orient="records")
-    return alle_daten
+    try:
+        wetterdaten = get_wetter(station)
+        df = pandas.read_csv(wetterdaten, skiprows=20, parse_dates=["    DATE"])
+        return df.to_dict(orient="records")
+    except FileNotFoundError as e:
+        return jsonify({"Error": str(e)}), 404
+    except Exception as e:
+        return jsonify({"Error": f"Fehler beim Lesen der Datei"}), 500
 
 
 # Wetterarchiv - Backend-Routine für Jahr/Jahrescharts
 @app.route("/api/v1/yearinput/<station>/<year>")
 def jahreschart(station, year):
-    wetterdaten = r"C:\Users\Proto\Desktop\Programmierer\Programmieren\Großprojekte\3. Wetter API\Wetterdaten\data\TG_STAID" + str(station).zfill(6) + ".txt"
-    df = pandas.read_csv(wetterdaten, skiprows=20)
-    df["    DATE"] = df["    DATE"].astype(str)
-    jahre = df[df["    DATE"].str.startswith(str(year))].to_dict(orient="records")
-    return jahre
+    try:
+        wetterdaten = get_wetter(station)
+        df = pandas.read_csv(wetterdaten, skiprows=20)
+        df["    DATE"] = df["    DATE"].astype(str)
+        jahre = df[df["    DATE"].str.startswith(str(year))].to_dict(orient="records")
+        return jahre
+    except FileNotFoundError as e:
+        return jsonify({"Error": str(e)}), 404
+    except Exception as e:
+        return jsonify({"Error": f"Fehler beim Erstellen der Charts"}), 500
 
 
 
