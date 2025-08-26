@@ -209,7 +209,7 @@ body {
   font-size: 2.5em;
   font-weight: bold;
   border-radius: 0.75em;
-  width: 30%;
+  width: 29vw;
   text-align: center;
   transition: transform 0.5s ease;
 }
@@ -239,7 +239,7 @@ body {
   font-size: 3.0rem;
 }
 .trennstrich {
-  border-top: 0.1em solid #c1ceeb;
+  border-top: 0.1rem solid #c1ceeb;
   margin: auto;
   width: 60%;
 }
