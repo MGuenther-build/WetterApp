@@ -84,54 +84,69 @@
                         <div class="trennstrich"></div>
                         <p class="{{ min_class }}">{{ min_temp }}°C</p>
 
+                        <!-- zerstören des vorherigen Charts -->
+                        <script>
+                            window.charts = window.charts || {};
+                        </script>
+
                         <!-- Charts.js -->
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                         <canvas id="tempChart-{{ tag }}" width="300" height="150"></canvas>
                         <script>
-                        window.addEventListener('load', function() {
-                            const tags = {{ tage | tojson }};
-                            Object.keys(tags).forEach(function(tag, index) {
-                                const ctx = document.getElementById('tempChart-' + tag).getContext('2d');
-                                new Chart(ctx, {
-                                    type: 'line',
-                                    data: {
-                                        labels: tags[tag].map(e => e.local_time.substring(11, 16)),
-                                        datasets: [{
-                                            label: 'Temperatur (°C)',
-                                            data: tags[tag].map(e => Math.round(e.main.temp)),
-                                            borderColor: '#FF9900',
-                                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                                            tension: 0.3,
-                                            pointRadius: 5,
-                                            pointHoverRadius: 7,
-                                            pointBackgroundColor: '#2B1B04',
-                                            }]
-                                    },
-                                    options: {
-                                        plugins: {
-                                            tooltip: {
-                                                callbacks: {
-                                                    label: function(context) {
-                                                        const index = context.dataIndex;
-                                                        const eintrag = tags[tag][index];
-                                                        return [
-                                                            `Temperatur: ${Math.round(eintrag.main.temp)}°C`,
-                                                            `Luftfeuchtigkeit: ${eintrag.main.humidity}%`,
-                                                            `gefühlte Temperatur: ${Math.round(eintrag.main.feels_like)}°C`
-                                                        ];
-                                                    }
-                                                }
-                                            },
-                                            legend: { display: false }
-                                        },
-                                        scales: {
-                                            x: { title: { display: true, text: 'Uhrzeit (Ortszeit)' } },
-                                            y: { title: { display: true, text: 'Temperatur (°C)' } }
-                                        }
+                            window.addEventListener('load', function () {
+                                const tags = {{ tage | tojson }};
+                                Object.keys(tags).forEach(function (tag) {
+                                    const canvasId = 'tempChart-' + tag;
+                                    const canvas = document.getElementById(canvasId);
+                                    if (!canvas)
+                                        return;
+
+                                    const ctx = canvas.getContext('2d');
+
+                                    if (charts[canvasId]) {
+                                        charts[canvasId].destroy();
                                     }
+
+                                    charts[canvasId] = new Chart(ctx, {
+                                        type: 'line',
+                                        data: {
+                                            labels: tags[tag].map(e => e.local_time.substring(11, 16)),
+                                            datasets: [{
+                                                label: 'Temperatur (°C)',
+                                                data: tags[tag].map(e => Math.round(e.main.temp)),
+                                                borderColor: '#FF9900',
+                                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                                tension: 0.3,
+                                                pointRadius: 5,
+                                                pointHoverRadius: 7,
+                                                pointBackgroundColor: '#2B1B04',
+                                            }]
+                                        },
+                                        options: {
+                                            plugins: {
+                                                tooltip: {
+                                                    callbacks: {
+                                                        label: function (context) {
+                                                            const index = context.dataIndex;
+                                                            const eintrag = tags[tag][index];
+                                                            return [
+                                                                `Temperatur: ${Math.round(eintrag.main.temp)}°C`,
+                                                                `Luftfeuchtigkeit: ${eintrag.main.humidity}%`,
+                                                                `gefühlte Temperatur: ${Math.round(eintrag.main.feels_like)}°C`
+                                                            ];
+                                                        }
+                                                    }
+                                                },
+                                                legend: { display: false }
+                                            },
+                                            scales: {
+                                                x: { title: { display: true, text: 'Uhrzeit (Ortszeit)' } },
+                                                y: { title: { display: true, text: 'Temperatur (°C)' } }
+                                            }
+                                        }
+                                    });
                                 });
                             });
-                        });
                         </script>
                         <div class="weather-timeline">
                             {% for eintrag in eintraege %}
