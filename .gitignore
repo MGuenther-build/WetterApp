@@ -1,2 +1,4 @@
 Wetterdaten/
 .env
+desktop.ini
+__pycache__/
