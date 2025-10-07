@@ -310,9 +310,9 @@ body {
 
 .fade {
   opacity: 0;
-  transform: translateY(-5em);
+  transform: translateY(-10em);
   filter: blur(0.5em);
-      animation: fadeDown 3.0s ease forwards;
+      animation: fadeDown 3.5s ease-out forwards;
 }
 @keyframes fadeDown {
   to {
@@ -325,7 +325,7 @@ body {
 
 
 .fade-out {
-  animation: fadeOut 3.0s ease forwards;
+  animation: fadeOut 3.5s ease-out forwards;
 }
 @keyframes fadeOut {
   from {
@@ -335,8 +335,8 @@ body {
   }
   to {
     opacity: 0;
-    filter: blur(8px);
-    transform: translateY(-5em);
+    filter: blur(10px);
+    transform: translateY(-10em);
   }
 }
 
