@@ -29,7 +29,7 @@
 * HTML/CSS/JavaScript: Für die moderne Kacheloptik und Interaktivität.
 
 # Lizenz
-Diese App hat keine Lizenz. Sie kann jeder herunterladen oder klonen und verändern, wie er will! Ich bin dann allerdings nicht mehr Teil solcher Projekte.
+Diese App unterliegt der MIT-Lizenz. Sie kann von Jedem herunterladen oder geklont werden und dann natürlich auch verändert/erweitert werden! Ich bin dann allerdings nicht mehr Teil solcher Projekte.
 
 # Autor
 Martin Günther
