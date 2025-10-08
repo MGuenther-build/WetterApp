@@ -87,6 +87,8 @@ body {
   border-radius: 0.75em;
 }
 
+
+
 @keyframes slideFadeIn {
   0% {
     transform: translateY(-100%);
@@ -97,6 +99,8 @@ body {
     opacity: 1;
   }
 }
+
+
 
 .topbar ul {
   display: flex;
@@ -192,6 +196,7 @@ body {
 }
 
 
+
 /* für Design der Wettervorhersage-Ausgabe */
 .forecast-grid {
   display: flex;
@@ -250,7 +255,17 @@ body {
 .output p:last-of-type {
   margin-bottom: 3em;
 }
-
+@media (max-width: 600px) {
+  .output-grid {
+    grid-template-columns: 1fr;
+  }
+  .output h3 {
+    font-size: 2.5rem;
+  }
+  .output p {
+    font-size: 1rem;
+  }
+}
 
 
 
