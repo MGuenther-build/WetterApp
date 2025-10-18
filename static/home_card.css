@@ -3,10 +3,10 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 5em;
-    margin-top: 2.5em;
-    margin-right: 3.75em;
-    margin-left: 3.75em;
-    margin-bottom: 2.5em;
+    margin-top: 2.5rem;
+    margin-right: 3.5rem;
+    margin-left: 3.5rem;
+    margin-bottom: 2.5rem;
     justify-content: center;
 }
 

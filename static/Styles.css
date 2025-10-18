@@ -324,34 +324,32 @@ body {
 
 
 .fade {
-  opacity: 0;
-  transform: translateY(-10em);
-  filter: blur(0.5em);
-      animation: fadeDown 3.5s ease-out forwards;
+  animation: fadeDown 3.0s ease-out forwards;
 }
 @keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10em) scale(0);
+  }
   to {
-  opacity: 1;
-  filter: blur(0);
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
 
 
 .fade-out {
-  animation: fadeOut 3.5s ease-out forwards;
+  animation: fadeOut 2.0s ease-out forwards;
 }
 @keyframes fadeOut {
   from {
     opacity: 1;
-    filter: blur(0);
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
   to {
     opacity: 0;
-    filter: blur(10px);
-    transform: translateY(-10em);
+    transform: translateY(-10em) scale(0);
   }
 }
 

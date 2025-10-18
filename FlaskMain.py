@@ -16,7 +16,6 @@ def home():
     return render_template ("index.html")
 
 
-# Wetterarchiv - Hauptelemente
 @app.route("/Wetterarchiv")
 def wetterarchiv():
     try:
@@ -90,8 +89,6 @@ def jahreschart(station, year):
 
 
 
-
-# Wettervorhersage - Backend-Routine
 @app.route("/vorhersage/<stadt>", methods=["GET"])
 def vorhersage(stadt):
     try:
@@ -102,7 +99,7 @@ def vorhersage(stadt):
         return jsonify({"error": str(e)})
 
 
-# Wettervorhersage - Frontend-Anbindung
+
 @app.route("/3-Tage-Wetter", methods=["GET", "POST"])
 def wettervorhersage_3_Tage():
     if request.method == "POST":
@@ -124,7 +121,6 @@ def wettervorhersage_3_Tage():
 
 
 
-# Impressum
 @app.route("/Impressum")
 def impressum():
     return render_template ("impressum.html")
