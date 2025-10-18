@@ -124,8 +124,6 @@ def wettervorhersage_3_Tage():
 
 
 
-
-
 # Impressum
 @app.route("/Impressum")
 def impressum():
