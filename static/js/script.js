@@ -51,9 +51,19 @@ document.querySelectorAll('a').forEach(link => {
   });
 });
 
+function decodeEmail() {
+  const parts = ["UHJvdG9vbHMxODAy", "Z21haWwuY29t"];
+  const email = atob(parts[0]) + "@" + atob(parts[1]);
+  const emailSpan = document.getElementById("email");
+  if (emailSpan) {
+    emailSpan.textContent = email;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const spinner = document.getElementById('global-loading-indicator');
   if (spinner) {
     spinner.style.display = 'none';
   }
+  decodeEmail();
 });

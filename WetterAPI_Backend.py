@@ -1,6 +1,7 @@
 import requests
 import logging
 from datetime import datetime, timedelta, timezone
+from collections import Counter
 import os
 from dotenv import load_dotenv
 
@@ -8,13 +9,29 @@ load_dotenv()
 API_KEY = os.getenv("API_KEY")
 
 
-def erlaubte_tage(timezone_offset):
+
+def daten_pro_tag(daten_liste, timezone_offset):
+    zaehler = Counter()
+    for eintrag in daten_liste:
+        timestamp = eintrag["dt"]
+        datum = datetime.fromtimestamp(timestamp, tz=timezone.utc) + timedelta(seconds=timezone_offset)
+        zaehler[datum.date()] += 1
+    return zaehler
+
+def erlaubte_tage(daten_liste, timezone_offset):
     utc_now = datetime.now(timezone.utc)
     local = utc_now + timedelta(seconds=timezone_offset)
     heute = local.date()
     morgen = heute + timedelta(days=1)
     uebermorgen = heute + timedelta(days=2)
-    return {heute, morgen, uebermorgen}
+    ueberuebermorgen = heute + timedelta(days=3)
+    zaehler = daten_pro_tag(daten_liste, timezone_offset)
+    erlaubte = {morgen, uebermorgen}
+    if zaehler.get(heute, 0) > 0:
+        erlaubte.add(heute)
+    else:
+        erlaubte.add(ueberuebermorgen)
+    return erlaubte
 
 def heute_morgen_uebermorgen(timestamp, timezone_offset):
     utc_time = datetime.fromtimestamp(timestamp, tz=timezone.utc)
@@ -27,6 +44,8 @@ def heute_morgen_uebermorgen(timestamp, timezone_offset):
         return ("Morgen")
     elif datum == heute + timedelta(days=2):
         return ("Übermorgen")
+    elif datum == heute + timedelta(days=3):
+        return ("In 3 Tagen")
 
 def get_daten(Stadt_waehlen, Tage_der_Vorhersage=None):
     try:
@@ -57,7 +76,7 @@ def get_daten(Stadt_waehlen, Tage_der_Vorhersage=None):
     # Integration der neuen Bezeichnung Heute, Morgen, Übermorgen in den Forecast daten_fein ohne Überlauf in den Tag Überübermorgen
     vorhersage_3_Tage = []
     timezone_offset = daten["city"]["timezone"]
-    erlaubte_tage_set = erlaubte_tage(timezone_offset)
+    erlaubte_tage_set = erlaubte_tage(daten["list"], timezone_offset)
     for i in daten["list"]:
         timestamp = i["dt"]
         datum = datetime.fromtimestamp(timestamp, tz=timezone.utc) + timedelta(seconds=timezone_offset)

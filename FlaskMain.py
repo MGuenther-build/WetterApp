@@ -33,7 +33,7 @@ def wetterarchiv():
                                 jahre=jahre)
     except Exception as e:
         return render_template("wetterarchiv.html", fehler=str(e))
-        
+
 
 
 # Wetterarchiv - Backend-Routine für Temperatur pro Tag
@@ -60,6 +60,7 @@ def temperatur(station, date):
             "temperature": temperatur}
 
 
+
 # Wetterarchiv - Backend-Routine für Wetterstation
 @app.route("/api/v1/<station>")
 def alle_daten_einer_station(station):
@@ -71,6 +72,7 @@ def alle_daten_einer_station(station):
         return jsonify({"Error": str(e)}), 404
     except Exception as e:
         return jsonify({"Error": f"Fehler beim Lesen der Datei"}), 500
+
 
 
 # Wetterarchiv - Backend-Routine für Jahr/Jahrescharts
@@ -103,7 +105,6 @@ def vorhersage(stadt):
         return jsonify(daten)
     except Exception as e:
         return jsonify({"error": str(e)})
-
 
 
 
