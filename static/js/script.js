@@ -35,7 +35,6 @@ document.querySelectorAll('a').forEach(link => {
     }
 
     const elementsToFade = [
-      document.querySelector('.topbar'),
       document.querySelector('.main-wrapper'),
       document.querySelector('.kacheln'),
       document.querySelector('.main-wrapper-subsites'),

@@ -103,7 +103,7 @@ form#wetterForm button:active {
 }
 
 canvas#chart {
-    width: 88vw !important;
+    width: 90vw !important;
     height: auto;
     display: flex;
     margin: 0 auto;

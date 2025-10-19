@@ -60,13 +60,13 @@ def get_daten(Stadt_waehlen, Tage_der_Vorhersage=None):
         raise RuntimeError("Stadt konnte nicht gefunden werden")
     except requests.exceptions.RequestException as f:
         logging.error(f"Verbindungsfehler {e}")
-        raise RuntimeError("Verbindung zu Wetterarchiv konnte nicht hergestellt werden")
+        raise RuntimeError("Verbindung konnte nicht hergestellt werden. Versuchen Sie es später nochmal.")
     except ValueError as g:
         logging.error(f"Fehler JSON-Daten {g}")
         raise RuntimeError("fehlerhafte Daten")
 
     if "list" not in daten or not daten.get("city"):
-        raise ValueError ("Stadt nicht gefunden oder nicht vorhanden!")
+        raise ValueError ("Stadt nicht gefunden")
     
     # Filterung der Tage der Vorhersage
     daten_fein = daten["list"]

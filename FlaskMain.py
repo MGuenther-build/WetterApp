@@ -47,7 +47,7 @@ def temperatur(station, date):
     else:
         temperatur_wert = temperatur_als_serie.iloc[0] / 10
         if temperatur_wert < -100:
-            temperatur = "Für diesen Tag sind keine Daten vorhanden oder wurden als falsch identifiziert"
+            temperatur = "Für diesen Tag sind keine Daten vorhanden oder wurden als Messerfehler identifiziert"
         else:
             temperatur = temperatur_wert
     try:
