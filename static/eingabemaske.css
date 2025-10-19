@@ -2,7 +2,6 @@
   font-size: 1.5em;
 }
 
-
 form#wetterForm {
     background-color: rgba(248, 248, 248, 0.5);
     padding: 2rem;
@@ -15,7 +14,6 @@ form#wetterForm {
     gap: 2rem;
 }
 
-/* labels */
 form#wetterForm label {
     font-weight: bold;
     margin-bottom: 0.3rem;
@@ -23,7 +21,6 @@ form#wetterForm label {
     color: #333;
 }
 
-/* inputs + select */
 form#wetterForm input[type="text"],
 form#wetterForm select {
     padding: 0.6rem;
@@ -41,7 +38,6 @@ form#wetterForm select:focus {
     outline: none;
 }
 
-/* button */
 form#wetterForm button {
     background-color: #4a90e2;
     color: white;
@@ -58,15 +54,14 @@ form#wetterForm button:hover {
 }
 
 form#wetterForm button:active {
-    color: #000000;
+    color: #282727;
     background-color: #1c64ab;
 }
 
-/* result styling */
 #result {
     margin-top: 2rem;
     font-size: 1.2rem;
-    color: #333;
+    color: #282727;
     text-align: center;
 }
 
@@ -84,8 +79,6 @@ form#wetterForm button:active {
     flex-direction: column;
 }
 
-
-/*für die Charts */
 #chartContainer {
     display: none;
     background-color: rgba(248, 248, 248, 0.5);

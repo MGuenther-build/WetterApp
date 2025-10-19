@@ -1,5 +1,6 @@
 
 html {
+  background-color: #1c64ab;
   height: 100%;
   width: 100%;
   background: url('../static/Wetter_Wallpaper.webp') no-repeat center center fixed;
@@ -12,7 +13,6 @@ body {
   min-height: 100vh;
   margin: 0;
   font-family: "Winky Rough";
-  background: url('../static/Wetter_Wallpaper.webp') no-repeat center center fixed;
   background-size: 100% 100%;
   box-sizing: border-box;
   flex-direction: column;
@@ -30,18 +30,21 @@ body {
   text-shadow: 0.25em 0.5em 0.75em rgba(62, 115, 193, 0.6);
   font-size: 6.5rem;
 }
+
 .banner-archiv {
   color: rgba(248, 248, 248, 0.9);
   text-shadow: 0.25em 0.5em 0.75em rgba(62, 115, 193, 0.6);
   font-size: 4.0rem;
   padding-bottom: 0.1em;
 }
+
 .banner-vorhersage {
   color: rgba(248, 248, 248, 0.9);
   text-shadow: 0.25em 0.5em 0.75em rgba(62, 115, 193, 0.6);
   font-size: 4.0rem;
   padding-bottom: 0.25em;
 }
+
 .banner-impressum {
   color: rgba(248, 248, 248, 0.9);
   text-shadow: 0.25em 0.5em 0.75em rgba(62, 115, 193, 0.6);
@@ -53,17 +56,44 @@ body {
 .main-wrapper-subsites {
   min-height: 90vh;
   font-weight: 500;
-  padding-top: 3.125rem;
+  padding-top: 3.5rem;
+  margin-bottom: 1.5rem;
   box-sizing: border-box;
   text-align: center;
 }
 
 
 
-/* Anpassung Wetterarchiv Chart */
 #chart {
   max-height: 66vh;
   width: 100%;
+}
+#chartContainer {
+  margin: 1.0rem;
+}
+
+
+
+.spinner {
+  border: 0.5rem solid #f3f3f3;
+  border-top: 0.5rem solid #282727;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+.design_spinner {
+  display: none;
+  text-align:center;
+  margin:1em 0;
 }
 
 
@@ -86,9 +116,6 @@ body {
   box-shadow: 0.25em 0.75em 0.75em rgba(255, 255, 255, 0.2);
   border-radius: 0.75em;
 }
-
-
-
 @keyframes slideFadeIn {
   0% {
     transform: translateY(-100%);
@@ -100,8 +127,6 @@ body {
   }
 }
 
-
-
 .topbar ul {
   display: flex;
   list-style: inside;
@@ -110,9 +135,9 @@ body {
 .topbar li a {
   color: #f5f2f0;
   text-decoration: none;
-  font-size: 1em;
-  padding: 1em 3.75em;
-  border-radius: 0.1em;
+  font-size: 1.1rem;
+  padding: 1rem 3.75rem;
+  border-radius: 0.1rem;
   transition: transform 2.0s ease;
 }
 
@@ -129,11 +154,39 @@ body {
 
 
 
+.info-wrapper {
+  max-width: 59%;
+  margin: 0 auto;
+  text-align: center;
+}
+@media (max-width: 768px) {
+  .info-wrapper {
+    max-width: 90%;
+  }
+}
+
+.wetterarchiv-info {
+  color: white;
+  margin-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  font-weight: 300;
+  text-shadow: 0.05rem 0.05rem 0.25rem rgba(6, 38, 107, 0.8)
+}
+
+
+
 /* für Suchmaske Wettervorhersage */
+#wetterFormVorhersage {
+    background: transparent;
+}
+
+
 .wettervorhersage-container {
+  display: flex;
   margin-top: 0.625em;
   margin-bottom: 6.25em;
   align-items: center;
+  justify-content: center;
 }
 
 .input-wettervorhersage {
@@ -148,23 +201,26 @@ body {
     rgba(243, 244, 249, 0.2),
     rgba(33, 115, 183, 0.3)
   );
-  box-shadow: 0.125em 0.25em 0.75em 0.25em rgba(255, 255, 255, 0.2);
-  border-radius: 1.25em;
-  font-size: 1.5em;
+  box-shadow: 0.125rem 0.25rem 0.75rem 0.25rem rgba(255, 255, 255, 0.2);
+  border-radius: 1.25rem;
+  font-size: 1.5rem;
   text-align: center;
   font-weight: 800;
   color: #1c64ab;
   text-shadow: 0.1em 0.1em 0.2em rgba(255, 255, 255);
   border-color: transparent !important;
 }
+
 .input-wettervorhersage:hover {
   box-shadow: 0.25em 0.625em 0.75em 0.25em rgba(255, 255, 255, 0.5);
   border-color: transparent !important;  
 }
+
 .input-wettervorhersage::placeholder {
-  color: #333333;
+  color: #282727;
   font-weight: 500;
 }
+
 .button-wettervorhersage {
   margin-left: 0.625em;
   padding: 0.625em;
@@ -182,22 +238,24 @@ body {
   font-size: 1.2em;
   font-weight: 800;
   border-radius: 50%;
-  border-color: #333333;
+  border-color: #282727;
 }
+
 .button-wettervorhersage:hover {
   box-shadow: none;
   border-radius: 50%;
-  border-color: #333333;
+  border-color: #282727;
 }
+
 .button-wettervorhersage:active {
   transform: translateY(0.2em);
   border-radius: 50%;
-  border-color: #333333;
+  border-color: #282727;
 }
 
 
 
-/* für Design der Wettervorhersage-Ausgabe */
+/* Design Wettervorhersage */
 .forecast-grid {
   display: flex;
   gap: 1.25em;
@@ -294,16 +352,16 @@ body {
 
 /* Temperaturfarben */
 .temp-sehrkalt {
-  color: #2392d7;
+  color: #40a4e3;
 }
 .temp-kalt {
-  color: #49aeec;
+  color: #2699e0;
 }
 .temp-kuehl {
-  color: #84b8d8;
+  color: #1393e3;
 }
 .temp-maessig {
-  color: #d6e18d;
+  color: #dbd393;
 }
 .temp-mild {
   color: #d27326;
@@ -323,41 +381,70 @@ body {
 
 
 
-.fade {
-  animation: fadeDown 3.0s ease-out forwards;
+.fade, .fade-out {
+  will-change: opacity, transform, filter;
 }
+
+.fade {
+  animation: fadeDown 3.0s ease forwards;
+}
+
 @keyframes fadeDown {
   from {
     opacity: 0;
-    transform: translateY(-10em) scale(0);
+    transform: translateY(-50%);
+    filter: blur(6px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
+    filter: blur(0);
   }
 }
 
-
-
 .fade-out {
-  animation: fadeOut 2.0s ease-out forwards;
+  animation: fadeOut 2.5s ease forwards;
 }
+
 @keyframes fadeOut {
   from {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
+    filter: blur(0);
   }
   to {
     opacity: 0;
-    transform: translateY(-10em) scale(0);
+    transform: translateY(-50%);
+    filter: blur(10px);
+  }
+}
+
+@keyframes slideFadeIn {
+  0% {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
 
 
+.homepageLink {
+  text-align: center;
+  color: white;
+  font-size: 0.85em;
+  font-weight: 300;
+  text-decoration: none
+}
+
+
+
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-BlackItalic.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-BlackItalic.woff2') format('woff2');
     font-weight: 900;
     font-style: italic;
     font-display: swap;
@@ -365,7 +452,7 @@ body {
 
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-Bold.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-Bold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
@@ -373,7 +460,7 @@ body {
 
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-Black.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-Black.woff2') format('woff2');
     font-weight: 900;
     font-style: normal;
     font-display: swap;
@@ -381,7 +468,7 @@ body {
 
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-Medium.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-Medium.woff2') format('woff2');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -389,7 +476,7 @@ body {
 
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-Light.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-Light.woff2') format('woff2');
     font-weight: 300;
     font-style: normal;
     font-display: swap;
@@ -397,7 +484,7 @@ body {
 
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-ExtraBoldItalic.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-ExtraBoldItalic.woff2') format('woff2');
     font-weight: bold;
     font-style: italic;
     font-display: swap;
@@ -405,7 +492,7 @@ body {
 
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-Italic.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-Italic.woff2') format('woff2');
     font-weight: normal;
     font-style: italic;
     font-display: swap;
@@ -413,7 +500,7 @@ body {
 
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-Regular.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -421,7 +508,7 @@ body {
 
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-ExtraBold.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-ExtraBold.woff2') format('woff2');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
@@ -429,7 +516,7 @@ body {
 
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-MediumItalic.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-MediumItalic.woff2') format('woff2');
     font-weight: 500;
     font-style: italic;
     font-display: swap;
@@ -437,7 +524,7 @@ body {
 
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-SemiBoldItalic.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-SemiBoldItalic.woff2') format('woff2');
     font-weight: 600;
     font-style: italic;
     font-display: swap;
@@ -445,7 +532,7 @@ body {
 
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-SemiBold.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-SemiBold.woff2') format('woff2');
     font-weight: 600;
     font-style: normal;
     font-display: swap;
@@ -453,7 +540,7 @@ body {
 
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-LightItalic.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-LightItalic.woff2') format('woff2');
     font-weight: 300;
     font-style: italic;
     font-display: swap;
@@ -461,7 +548,7 @@ body {
 
 @font-face {
     font-family: 'Winky Rough';
-    src: url('Fonts/WinkyRough/WinkyRough-BoldItalic.woff2') format('woff2');
+    src: url('fonts/WinkyRough/WinkyRough-BoldItalic.woff2') format('woff2');
     font-weight: bold;
     font-style: italic;
     font-display: swap;

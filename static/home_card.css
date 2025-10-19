@@ -2,7 +2,7 @@
 .kacheln {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 5em;
+    gap: 5rem;
     margin-top: 2.5rem;
     margin-right: 3.5rem;
     margin-left: 3.5rem;

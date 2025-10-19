@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="static/Pics.css">
     <link rel="stylesheet" href="static/Styles.css">
     <link rel="stylesheet" href="static/home_card.css">
-    <script src="{{ url_for('static', filename='js_styles.js') }}" defer></script>
+    <link rel="prefetch" href="{{ url_for('wetterarchiv') }}">
+    <link rel="prefetch" href="{{ url_for('wettervorhersage_3_Tage') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
 
 <body>
@@ -38,7 +40,7 @@
         </main>
     </div>
 <br>
-<a style="text-align: center; color: white; font-size: 0.85em; font-weight: 300; text-decoration: none;" href="https://www.mguenther-build.de">MGuenther-build.de</a>
+<a class="homepageLink" href="https://www.mguenther-build.de">MGuenther-build.de</a>
 <br>
 </body>
 </html>

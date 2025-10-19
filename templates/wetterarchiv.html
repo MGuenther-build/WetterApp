@@ -2,16 +2,19 @@
 <html lang="de">
 
 <head>
-    <link rel="preload" href="{{ url_for('static', filename='Wetter_Wallpaper.webp') }}" as="image">
     <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wetterarchiv Europa 1860-2022</title>
-    <link rel="stylesheet" href="static/Pics.css">
-    <link rel="stylesheet" href="static/Styles.css">
-    <link rel="stylesheet" href="static/eingabemaske.css">
-    <script src="{{ url_for('static', filename='js_styles.js') }}" defer></script>
-    <script>const stationenListe = {{ stationen | tojson}};</script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Pics.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='eingabemaske.css') }}">
+    <link rel="prefetch" href="{{ url_for('home') }}">
+    <link rel="prefetch" href="{{ url_for('wettervorhersage_3_Tage') }}">
+    <link rel="prefetch" href="{{ url_for('impressum') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/wetterarchiv.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
 
 <body>
@@ -26,7 +29,6 @@
         <main class="content">
             <h1 class="banner-archiv">Wetterarchiv</h1>
             <form id="wetterForm">
-                
                 <div class="form-group">
                     <label class="abfrage-label">Abfrage starten</label>
                     <br></br>
@@ -48,7 +50,7 @@
             <div id="result"></div>
 
             <div id="chartWrapper">
-                <div id="chartContainer" style="margin: 1.25rem;">
+                <div id="chartContainer">
                     <h2>Höchsttemperatur</h2>
                     <div id="chartInfo"></div>
                     <h2>📈 Jahresverlauf</h2>
@@ -56,129 +58,17 @@
                 </div>
             </div>
 
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script>
-            document.getElementById('wetterForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const station = document.getElementById('station').value;
-                const stationName = stationenListe.find(s => s.STAID == station)?.STANAME || station;
-                const dateInput = document.getElementById('date').value;
-                const parts = dateInput.split('.');
-                
-                if (parts.length !== 3) {
-                    document.getElementById('result').innerHTML = `<p>❌ Ungültiges Datum. Bitte im Format TT.MM.JJJJ eingeben.</p>`;
-                    return;
-                }
-
-                const [day, month, year] = parts;
-                const dateFormatted = `${year}${month.padStart(2, '0')}${day.padStart(2, '0')}`;
-                const apiURL = `/api/v1/${station}/${dateFormatted}`;
-
-                // Erst Temperatur abfragen
-                fetch(apiURL)
-                    .then(response => response.json())
-                    .then(data => {
-                        const temperatureDisplay =
-                            typeof data.temperature === "number"
-                                ? `${data.temperature}°C`
-                                : data.temperature;
-
-                        document.getElementById('chartInfo').innerHTML = `
-                            <p>📍 ${stationName}</p>
-                            <p>📅 Datum: ${data.date}</p>
-                            <p>🌡️ Temperatur: ${temperatureDisplay}</p>
-                        `;
-
-                        // Danach automatisch den Jahreschart laden
-                        return fetch(`/api/v1/yearinput/${station}/${year}`);
-                    })
-                    .then(response => response.json())
-                    .then(chartData => {
-                        const labels = [];
-                        const temps = [];
-
-                        chartData.forEach(entry => {
-                            const dateStr = entry["    DATE"];
-                            const temp = entry["   TG"];
-                            if (temp > -800) {
-                                const day = dateStr.slice(6, 8);
-                                const month = dateStr.slice(4, 6);
-                                labels.push(`${day}.${month}`);
-                                temps.push(temp / 10);
-                            }
-                        });
-
-                        const container = document.getElementById('chartContainer');
-                        container.classList.add('visible');
-
-                        if (window.chartInstance) {
-                            window.chartInstance.destroy();
-                        }
-
-                        const ctx = document.getElementById('chart').getContext('2d');
-                        window.chartInstance = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                    label: "",
-                                    data: temps,
-                                    borderColor: '#2B1B04',
-                                    pointRadius: 5,
-                                    pointHoverRadius: 7,
-                                    pointBackgroundColor: '#FF9900',
-                                    tension: 0.4
-                                }]
-                            },
-                            options: {
-                                plugins: {
-                                    tooltip: {
-                                        enabled: true,
-                                        callbacks: {
-                                            label: function(context) {
-                                                return `${context.parsed.y}°C am ${context.label}`;
-                                            }
-                                        }
-                                    },
-                                    legend: {
-                                        display: false
-                                    }
-                                },
-                                responsive: true,
-                                animation: {
-                                    duration: 3000,
-                                    easing: 'easeInOutCubic'
-                                },
-                                scales: {
-                                y: {
-                                    title: { display: true, text: 'Temperatur in Celsius' }
-                                },
-                                x: {
-                                    title: { display: true},
-                                    ticks: {
-                                        maxTicksLimit: 12
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                        document.getElementById('chartContainer').scrollIntoView({ behavior: 'smooth' });
-                    })
-                    
-                    .catch(error => {
-                        console.error(error);
-                        document.getElementById('result').innerHTML = `<p>❌ Fehler bei der Abfrage.</p>`;
-                    });
-            });
-            </script>
-        <p style="color: white; margin-top: 2.5em; padding-bottom: 2.5em; font-weight: 300; text-shadow: 0.05em 0.05em 0.25em rgba(6, 38, 107, 0.8);">Bitte bedenken Sie, dass es sich hier um eine Sammlung aller europäischen Wetterstationen handelt,
-            die seit 1860 bis 2022 Messungen vornahmen. <br>Einige von ihnen sind schon lange nicht mehr in Betrieb, andere waren nur wenige Jahre in Betrieb oder immer mal wieder (doppelte Einträge!).
+            <div class="info-wrapper">
+                <p class="wetterarchiv-info">Bitte bedenken Sie, dass es sich hier um eine Sammlung aller europäischen Wetterstationen handelt, die seit 1860 bis 2022 
+                    Messungen vornahmen. Einige von ihnen sind schon lange nicht mehr in Betrieb, andere waren nur wenige Jahre in Betrieb oder immer mal wieder 
+                    (doppelte Einträge!).
+                </p>
+            </div>
         </main>
     </div>
 {% if fehler %}
     <p>Fehler: {{ fehler }}</p>
 {% endif %}
-    </div>
+<script id="stationen-data" type="application/json">{{ stationen | tojson }}</script>
 </body>
 </html>

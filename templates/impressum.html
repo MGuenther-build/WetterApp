@@ -2,14 +2,16 @@
 <html lang="de">
 
 <head>
-    <link rel="preload" href="{{ url_for('static', filename='Wetter_Wallpaper.webp') }}" as="image">
     <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Impressum</title>
-    <link rel="stylesheet" href="static/Pics.css">
-    <link rel="stylesheet" href="static/Styles.css">
-    <script src="{{ url_for('static', filename='js_styles.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Pics.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styles.css') }}">
+    <link rel="prefetch" href="{{ url_for('home') }}">
+    <link rel="prefetch" href="{{ url_for('wetterarchiv') }}">
+    <link rel="prefetch" href="{{ url_for('wettervorhersage_3_Tage') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
 
 <body>

@@ -89,14 +89,21 @@ def jahreschart(station, year):
 
 
 
-@app.route("/vorhersage/<stadt>", methods=["GET"])
+@app.route("/vorhersage/<stadt>")
 def vorhersage(stadt):
     try:
         tage = 3
         daten = get_daten(stadt, tage)
+        # UTC zu Lokalzeit konvertieren
+        offset = timedelta(seconds=daten['timezone'])
+        for eintrag in daten["list"]:
+            utc_time = datetime.fromtimestamp(eintrag["dt"], tz=UTC)
+            local_time = utc_time + offset
+            eintrag['local_time'] = local_time.strftime('%Y-%m-%d %H:%M')
         return jsonify(daten)
     except Exception as e:
         return jsonify({"error": str(e)})
+
 
 
 
