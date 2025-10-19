@@ -29,13 +29,19 @@ document.querySelectorAll('a').forEach(link => {
     e.preventDefault();
     const targetUrl = this.href;
 
+    const spinner = document.getElementById('global-loading-indicator');
+    if (spinner) {
+      spinner.style.display = 'block';
+    }
+
     const elementsToFade = [
       document.querySelector('.topbar'),
       document.querySelector('.main-wrapper'),
       document.querySelector('.kacheln'),
-      document.querySelector('.main-wrapper-subsites')
+      document.querySelector('.main-wrapper-subsites'),
+      document.querySelector('.main-wrapper-impressum')
     ].filter(Boolean);
-    
+
     fadeTransition({
       elements: elementsToFade,
       onComplete: () => {
@@ -43,4 +49,11 @@ document.querySelectorAll('a').forEach(link => {
       }
     });
   });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const spinner = document.getElementById('global-loading-indicator');
+  if (spinner) {
+    spinner.style.display = 'none';
+  }
 });
