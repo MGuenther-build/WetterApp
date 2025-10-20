@@ -1,4 +1,5 @@
 Wetterdaten/
 .env
+launch.json
 desktop.ini
 __pycache__/
