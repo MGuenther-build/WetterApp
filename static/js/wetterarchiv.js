@@ -10,8 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
 
         const station = document.getElementById("station").value;
-        const stationName =
-            stationenListe.find(s => s.STAID == station)?.STANAME || station;
+        const stationName = stationenListe.find(s => s.STAID == station)?.STANAME || station;
         const dateInput = document.getElementById("date").value;
         const parts = dateInput.split(".");
 
