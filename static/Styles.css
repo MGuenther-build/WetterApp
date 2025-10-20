@@ -75,7 +75,8 @@ body {
 .main-wrapper-impressum {
   margin: 0 auto;
   width: 60vw;
-  font-weight: 500;
+  font-weight: 600;
+  font-style: normal;
   padding-top: 3rem;
   margin-bottom: 2rem;
   box-sizing: border-box;
@@ -91,12 +92,140 @@ body {
 
 
 
+.home-kacheln {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5rem;
+  margin-top: 2.5rem;
+  margin-right: 3.5rem;
+  margin-left: 3.5rem;
+  margin-bottom: 2.5rem;
+  justify-content: center;
+}
+.card {
+  background: linear-gradient(
+    135deg,
+    rgba(236, 240, 243, 0.4),
+    rgba(243, 244, 249, 0.5),
+    rgba(33, 115, 183, 0.4),
+    rgba(16, 86, 172, 0.2),
+    rgba(243, 244, 249, 0.5),
+    rgba(236, 240, 243, 0.4)
+  );
+  box-shadow: 0.25em 0.5em 1.25em 0.25em rgba(255, 255, 255, 0.3);
+  padding: 1em;
+  border-radius: 1.25em;
+  text-align: center;
+  transition: transform 0.6s ease-out;
+}
+.card-link {
+  text-decoration: none;
+  display: block;
+  margin-top: 0.625em;
+  margin-bottom: 1.25em;
+  color: #1c64ab;
+  text-shadow: 0 0.1em rgba(229, 240, 248, 0.5);
+  text-decoration: none;
+  font-weight: bold;
+}
+.card-link:hover {
+  color: #1c64ab;
+  text-shadow: 0 0.1em rgba(255, 255, 255, 0.5);
+}
+.card:hover {
+  box-shadow: 0.25em 0.75em 1.5em 0.5em rgba(255, 255, 255, 0.6);
+  transform: scale(1.08);
+}
+.card:active {
+  transform: scale(0.95);
+  transition: transform 0.5s ease;
+  box-shadow: 0.25em 0.5em 1.25em 0.25em rgba(86, 167, 233, 0.5);
+}
+.card img {
+  max-width: 75%;
+  height: auto;
+  border-radius: 0.75em;
+  padding-top: 0.35em;
+  padding-bottom: 0.35em;
+  padding-left: 0.35em;
+  padding-right: 0.35em;
+}
+.card p {
+  font-weight: 300;
+  font-style: normal;
+  font-size: 0.95em;
+  color: #ffffff;
+  text-shadow: 0.1em 0.1em rgba(0, 0, 0, 0.6);
+}
+.card p:hover {
+  color: #ffffff;
+}
+
+
+
+.abfrage-label {
+  font-size: 1.5em;
+}
+
+
+
+#result {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  color: #282727;
+  text-align: center;
+}
+#result p {
+  animation: fadeIn 0.6s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+
 #chart {
   max-height: 66vh;
   width: 100%;
 }
 #chartContainer {
-  margin: 1.0rem;
+  display: none;
+  margin: 1rem;
+  background-color: rgba(248, 248, 248, 0.5);
+  padding: 1rem;
+  border-radius: 0.75em;
+  box-shadow: 0 0.25em 0.5em rgba(0, 3, 10, 0.2);
+  width: 90vw;
+  opacity: 0;
+}
+#chartContainer.visible {
+  display: block;
+  opacity: 1;
+}
+#chartInfo {
+  border-bottom: 0.1em solid #4a90e2;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  text-align: center;
+}
+canvas#chart {
+  width: 90vw !important;
+  height: auto;
+  display: flex;
+  margin: 0 auto;
+}
+#chartWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+.form-group {
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -183,7 +312,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 500;
+  font-weight: 600;
+  font-style: normal;
   height: 7vh;
   background: linear-gradient(
     200deg,
@@ -265,8 +395,58 @@ body {
 
 /* für Suchmaske Wettervorhersage */
 #wetterFormVorhersage {
-    background: transparent;
+  background: transparent;
 }
+form#wetterForm {
+  background-color: rgba(248, 248, 248, 0.5);
+  padding: 2rem;
+  border-radius: 0.75em;
+  box-shadow: 0 0.25em 0.5em rgba(0, 3, 10, 0.2);
+  max-width: 32em;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+form#wetterForm label {
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  display: block;
+  color: #282727;
+}
+form#wetterForm input[type="text"],
+form#wetterForm select {
+  padding: 0.6rem;
+  font-size: 1rem;
+  border: 0.1em solid #ccc;
+  border-radius: 0.5em;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border 0.2s;
+}
+form#wetterForm input:focus,
+form#wetterForm select:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+form#wetterForm button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.3s ease;
+}
+form#wetterForm button:hover {
+  background-color: #1c64ab;
+}
+form#wetterForm button:active {
+  color: #282727;
+  background-color: #1c64ab;
+}
+
 
 
 .wettervorhersage-container {
@@ -472,7 +652,6 @@ body {
 .impressum-text1 {
   text-align: center;
   color: rgba(227, 226, 226);
-  font-family: 'Winky Rough';
   font-weight: 900;
   font-style: bold;
   font-size: 3rem;
@@ -482,7 +661,6 @@ body {
   margin: 2vh 0;
   text-align: center;
   color: white;
-  font-family: 'Winky Rough';
   font-weight: 600;
   font-style: normal;
   text-shadow: 0.1rem 0.1rem rgba(15, 50, 163, 0.7);
@@ -492,7 +670,6 @@ body {
   text-align: center;
   color: white;
   line-height: 1.4rem;
-  font-family: 'Winky Rough';
   font-weight: 600;
   font-style: italic;
   font-size: 1.0rem;
@@ -502,8 +679,7 @@ body {
   margin-bottom: 4vh;
   text-align: center;
   color: white;
-  font-family: 'Winky Rough';
-  font-weight: 500;
+  font-weight: 600;
   font-style: bold;
   font-size: 1.2rem;
 }
@@ -513,7 +689,6 @@ body {
 .impressum-textMain {
   text-align: center;
   color: white;
-  font-family: 'Winky Rough';
   font-weight: 300;
   font-style: normal;
   font-size: 1.0rem;
@@ -521,6 +696,7 @@ body {
 }
 .impressum-textMain-Fett {
   font-weight: 600;
+  font-style: normal;
   text-shadow: 0.1rem 0.1rem rgba(15, 50, 163, 0.6);
 }
 
@@ -537,113 +713,113 @@ body {
 
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-BlackItalic.woff2') format('woff2');
-    font-weight: 900;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-BlackItalic.woff2') format('woff2');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-Bold.woff2') format('woff2');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-Black.woff2') format('woff2');
-    font-weight: 900;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-Medium.woff2') format('woff2');
-    font-weight: 500;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-Light.woff2') format('woff2');
-    font-weight: 300;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-ExtraBoldItalic.woff2') format('woff2');
-    font-weight: bold;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-ExtraBoldItalic.woff2') format('woff2');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-Italic.woff2') format('woff2');
-    font-weight: normal;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-Italic.woff2') format('woff2');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-Regular.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-ExtraBold.woff2') format('woff2');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-ExtraBold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-MediumItalic.woff2') format('woff2');
-    font-weight: 500;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-MediumItalic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-SemiBoldItalic.woff2') format('woff2');
-    font-weight: 600;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-SemiBoldItalic.woff2') format('woff2');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-SemiBold.woff2') format('woff2');
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-LightItalic.woff2') format('woff2');
-    font-weight: 300;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-LightItalic.woff2') format('woff2');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
-    font-family: 'Winky Rough';
-    src: url('fonts/WinkyRough/WinkyRough-BoldItalic.woff2') format('woff2');
-    font-weight: bold;
-    font-style: italic;
-    font-display: swap;
+  font-family: 'Winky Rough';
+  src: url('fonts/WinkyRough/WinkyRough-BoldItalic.woff2') format('woff2');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
 }

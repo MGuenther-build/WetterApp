@@ -7,9 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WetterApp</title>
-    <link rel="stylesheet" href="static/Pics.css">
-    <link rel="stylesheet" href="static/Styles.css">
-    <link rel="stylesheet" href="static/home_card.css">
+    <link rel="stylesheet" href="static/pics.css">
+    <link rel="stylesheet" href="static/styles.css">
     <link rel="prefetch" href="{{ url_for('wetterarchiv') }}">
     <link rel="prefetch" href="{{ url_for('wettervorhersage_3_Tage') }}">
     <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
@@ -23,7 +22,7 @@
         <main class="content">
             <h1 class=banner>WetterApp</h1>
 
-            <div class="kacheln">
+            <div class="home-kacheln">
                 <a href="{{url_for('wetterarchiv')}}" class="card-link">
                     <div class="card">
                         <img src="{{ url_for('static', filename='Wetterarchiv.png') }}" class="portrait" alt="Wetterarchiv">
