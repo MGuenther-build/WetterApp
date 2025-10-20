@@ -19,7 +19,7 @@ form#wetterForm label {
     font-weight: bold;
     margin-bottom: 0.3rem;
     display: block;
-    color: #333;
+    color: #282727;
 }
 
 form#wetterForm input[type="text"],

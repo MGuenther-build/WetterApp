@@ -129,6 +129,55 @@ body {
 
 
 
+.fade, .fade-out {
+  will-change: opacity, transform, filter;
+  position: relative;
+  z-index: 1;
+}
+.fade {
+  animation: fadeDown 2.5s ease forwards;
+}
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-33%);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.fade-out {
+  animation: fadeOut 2.0s ease forwards;
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-33%);
+    filter: blur(10px);
+  }
+}
+@keyframes slideFadeIn {
+  0% {
+    transform: translateY(-33%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+
 .topbar {
   position: sticky;
   display: flex;
@@ -161,7 +210,7 @@ body {
 .topbar li::before {
   content: "•";
   position: absolute;
-  left: 0.5rem;
+  left: 0;
   top: 50%;
   transform: translateY(-50%);
   color: black;
@@ -173,6 +222,7 @@ body {
   color: #f5f2f0;
   text-align: center;
   text-decoration: none;
+  width: 4rem;
   font-size: 1.1rem;
   padding: 1rem 3.5rem;
   border-radius: 0.1rem;
@@ -417,52 +467,6 @@ body {
   color: #3e0804;
 }
 
-
-
-.fade, .fade-out {
-  will-change: opacity, transform, filter;
-}
-.fade {
-  animation: fadeDown 2.5s ease forwards;
-}
-@keyframes fadeDown {
-  from {
-    opacity: 0;
-    transform: translateY(-33%);
-    filter: blur(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-.fade-out {
-  animation: fadeOut 2.0s ease forwards;
-}
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-33%);
-    filter: blur(10px);
-  }
-}
-@keyframes slideFadeIn {
-  0% {
-    transform: translateY(-33%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
 
 
 .impressum-text1 {
