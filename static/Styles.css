@@ -3,6 +3,8 @@ html {
   background-color: #1c64ab;
   height: 100%;
   width: 100%;
+  scrollbar-gutter: stable;
+  scroll-behavior: smooth;
   background: url('../static/Wetter_Wallpaper.webp') no-repeat center center fixed;
   background-size: 100% 100%;
   overflow-y: scroll;
@@ -10,7 +12,6 @@ html {
 
 body {
   display: flex;
-  min-height: 100vh;
   margin: 0;
   font-family: "Winky Rough";
   background-size: 100% 100%;
@@ -20,7 +21,6 @@ body {
 
 .main-wrapper {
   min-height: 90vh;
-  font-weight: 500;
   box-sizing: border-box;
   text-align: center;
 }
@@ -29,6 +29,8 @@ body {
   color: rgba(248, 248, 248, 0.9);
   text-shadow: 0.25em 0.5em 0.75em rgba(62, 115, 193, 0.6);
   font-size: 6.5rem;
+  margin-top: 6.5vh;
+  margin-bottom: 6.5vh;
 }
 
 .banner-archiv {
@@ -58,7 +60,7 @@ body {
   min-height: 80vh;
   max-width: 100vw;
   font-weight: 500;
-  padding-top: 3rem;
+  padding-top: 2rem;
   box-sizing: border-box;
   text-align: center;
 }
@@ -76,7 +78,7 @@ body {
   width: 60vw;
   font-weight: 600;
   font-style: normal;
-  padding-top: 3rem;
+  padding-top: 2rem;
   margin-bottom: 2rem;
   box-sizing: border-box;
   text-align: center;
@@ -95,7 +97,6 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 5rem;
-  margin-top: 2.5rem;
   margin-right: 3.5rem;
   margin-left: 3.5rem;
   justify-content: center;
@@ -119,8 +120,6 @@ body {
 .card-link {
   text-decoration: none;
   display: block;
-  margin-top: 0.625em;
-  margin-bottom: 1.25em;
   color: #1c64ab;
   text-shadow: 0 0.1em rgba(229, 240, 248, 0.5);
   text-decoration: none;
@@ -268,7 +267,7 @@ canvas#chart {
   from {
     opacity: 0;
     transform: translateY(-33%);
-    filter: blur(6px);
+    filter: blur(4px);
   }
   to {
     opacity: 1;
@@ -289,7 +288,7 @@ canvas#chart {
   to {
     opacity: 0;
     transform: translateY(-33%);
-    filter: blur(10px);
+    filter: blur(6px);
   }
 }
 @keyframes slideFadeIn {
@@ -383,8 +382,8 @@ canvas#chart {
 
 .wetterarchiv-info {
   color: white;
-  margin-top: 2.5rem;
-  padding-bottom: 2.5rem;
+  margin-top: 2rem;
+  padding-bottom: 0.5rem;
   font-weight: 300;
   text-shadow: 0.05rem 0.05rem 0.25rem rgba(6, 38, 107, 0.8)
 }
