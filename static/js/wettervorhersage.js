@@ -1,11 +1,14 @@
 
 document.addEventListener('DOMContentLoaded', () => {
+    
     const form = document.getElementById('wetterFormVorhersage');
     const output = document.getElementById('forecast-output');
     const loading = document.getElementById('loading-indicator');
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        list.innerHTML = "";
 
         const stadt = document.getElementById('stadt').value.trim();
         if (!stadt) 
@@ -139,4 +142,45 @@ document.addEventListener('DOMContentLoaded', () => {
             output.innerHTML = '<p>Fehler beim Laden der Daten</p>';
         }
     });
+
+  const input = document.getElementById("stadt");
+  const wrapper = document.querySelector(".autocomplete-wrapper");
+  const list = document.createElement("ul");
+  list.id = "autocomplete-list";
+  list.className = "autocomplete-list";
+  wrapper.appendChild(list); 
+
+  let timeout = null;
+
+  input.addEventListener("input", () => {
+    clearTimeout(timeout);
+    const query = input.value.trim();
+    if (query.length < 2) {
+      list.innerHTML = "";
+      return;
+    }
+
+    timeout = setTimeout(() => {
+      fetch(`/api/geocode?q=${encodeURIComponent(query)}`)
+        .then(res => res.json())
+        .then(data => {
+          list.innerHTML = "";
+          data.forEach(item => {
+            const li = document.createElement("li");
+            li.textContent = `${item.name}, ${item.country}`;
+            li.addEventListener("click", () => {
+              input.value = item.name;
+              list.innerHTML = "";
+            });
+            list.appendChild(li);
+          });
+        });
+    }, 100);
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".wettervorhersage-container")) {
+      list.innerHTML = "";
+    }
+  });
 });

@@ -35,8 +35,11 @@
 
             <form id="wetterFormVorhersage">
                 <div class="wettervorhersage-container fade">
-                    <input type="text" name="stadt" id="stadt" class="input-wettervorhersage" placeholder="z.B. Tokyo" required title="Bitte englische Ortsnamen verwenden!">
-                    <button type="submit" class="button-wettervorhersage">Ok</button>
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="stadt" name="stadt" class="input-wettervorhersage" placeholder="z.B. Tokyo" required autocomplete="off">
+                        <ul id="autocomplete-list" class="autocomplete-list"></ul>
+                        <button type="submit" class="button-wettervorhersage">Ok</button>
+                    </div>
                 </div>
             </form>
 

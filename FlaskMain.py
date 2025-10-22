@@ -5,15 +5,24 @@ from datetime import datetime, timedelta, UTC
 from WetterAPI_Backend import get_daten
 from station_def import get_stations, get_wetter
 import pandas
+import requests
+import os
+from dotenv import load_dotenv
 #import json
 
 
 
 app = Flask(__name__)
 
+load_dotenv()
+API_KEY = os.getenv("API_KEY")
+
+
+
 @app.route("/")
 def home():
     return render_template ("index.html")
+
 
 
 @app.route("/Wetterarchiv")
@@ -59,6 +68,25 @@ def temperatur(station, date):
             "date": datum_mod,
             "temperature": temperatur}
 
+
+
+# Geocoding API
+@app.route("/api/geocode")
+def geocode():
+    ort = request.args.get("q")
+    if not ort:
+        return jsonify([])
+
+    try:
+        response = requests.get(
+            "http://api.openweathermap.org/geo/1.0/direct",
+            params={"q": ort, "limit": 10, "appid": os.getenv("API_KEY")}
+        )
+        data = response.json()
+        return jsonify(data)
+    except Exception as e:
+        return jsonify([]), 500
+    
 
 
 # Wetterarchiv - Backend-Routine für Wetterstation

@@ -520,6 +520,37 @@ form#wetterForm button:active {
 
 
 
+.autocomplete-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  border-top: none;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.autocomplete-list li {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.autocomplete-list li:hover {
+  background-color: rgba(58, 120, 206, 0.5);
+}
+
+
+
 /* Design Wettervorhersage */
 .forecast-grid {
   display: flex;
@@ -707,6 +738,8 @@ form#wetterForm button:active {
   font-weight: 300;
   text-decoration: none
 }
+
+
 
 
 
