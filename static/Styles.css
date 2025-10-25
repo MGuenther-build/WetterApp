@@ -5,8 +5,11 @@ html {
   width: 100%;
   scrollbar-gutter: stable;
   scroll-behavior: smooth;
-  background: url('../static/Wetter_Wallpaper.webp') no-repeat center center fixed;
+  background: url('../static/Wetter_Wallpaper.webp');
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: 100% 100%;
+  background-attachment: fixed;
   overflow-y: scroll;
   overflow-x: hidden;
 }
