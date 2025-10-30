@@ -1,9 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-    
     const form = document.getElementById('wetterFormVorhersage');
     const output = document.getElementById('forecast-output');
-    const loading = document.getElementById('loading-indicator');
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -14,14 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!stadt) 
             return;
 
-        loading.style.display = 'block';
+        showSpinner();
 
         try {
             const response = await fetch(`/vorhersage/${stadt}`);
             const daten = await response.json();
 
-            if (!daten.list || daten.list.length === 0) {
-                output.innerHTML = '<h2>Keine Daten gefunden</h2>';
+            if (daten.error) {
+                output.innerHTML = `<h2>${daten.error}</h2>`;
+                hideSpinner();
                 return;
             }
             const tage = {};
@@ -113,33 +112,46 @@ document.addEventListener('DOMContentLoaded', () => {
                             tooltip: {
                                 callbacks: {
                                     label: function(context) {
-                                        const index = context.dataIndex;
-                                        const e = tage[tag][index];
+                                            const index = context.dataIndex;
+                                            const e = tage[tag][index];
+                                        function beaufort(ms) {
+                                            const bft = [0.3, 1.5, 3.3, 5.4, 7.9, 10.7, 13.8, 17.1, 20.7, 24.4, 28.4, 32.6];
+                                            for (let i = 0; i < bft.length; i++) {
+                                                if (ms <= bft[i]) return i;
+                                            }
+                                            return 12;
+                                        }
                                         return [
                                             `Temperatur: ${Math.round(e.main.temp)}°C`,
                                             `Luftfeuchtigkeit: ${e.main.humidity}%`,
-                                            `Gefühlte Temperatur: ${Math.round(e.main.feels_like)}°C`
-                                        ];
+                                            `Gefühlte Temperatur: ${Math.round(e.main.feels_like)}°C`,
+                                            `Windstärke (Bft): ${beaufort(e.wind?.speed)}`,e.wind?.gust ? `Böen: ${Math.round(e.wind.gust * 3.6)} km/h` : null
+                                        ].filter(Boolean);
                                     }
                                 }
                             }
                         },
                         scales: {
-                            x: { title: { display: true, text: 'Uhrzeit (Ortszeit)' } },
-                            y: { title: { display: true, text: 'Temperatur (°C)' } }
+                            x: { 
+                                title: { display: true, text: 'Uhrzeit (Ortszeit)' } },
+                            y: { 
+                                title: { display: true, text: 'Temperatur (°C)' },
+                                ticks: { stepSize: 1 }
+                            }
                         }
                     }
                 });
             });
-            loading.style.display = 'none';
+            hideSpinner();
 
             const forecastSection = document.getElementById('scroll-forecast');
             if (forecastSection) forecastSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         } catch (err) {
             console.error(err);
-            loading.style.display = 'none';
+            hideSpinner();
             output.innerHTML = '<p>Fehler beim Laden der Daten</p>';
+            hideSpinner();
         }
     });
 

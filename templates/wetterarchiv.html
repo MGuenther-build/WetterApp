@@ -2,19 +2,19 @@
 <html lang="de">
 
 <head>
-    <link rel="preload" href="{{ url_for('static', filename='Wetter_Wallpaper.webp') }}" as="image">
-    <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wetterarchiv Europa 1860-2022</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='pics.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Wetterarchiv Europa</title>
+    <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
+    <link rel="preload" href="{{ url_for('static', filename='Wetter_Wallpaper.webp') }}" as="image">
+    <link rel="preload" href="{{ url_for('static', filename='styles.css') }}" as="style">
     <link rel="prefetch" href="{{ url_for('home') }}">
     <link rel="prefetch" href="{{ url_for('wettervorhersage_3_Tage') }}">
     <link rel="prefetch" href="{{ url_for('impressum') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ url_for('static', filename='js/wetterarchiv.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/wetterarchiv.js') }}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>

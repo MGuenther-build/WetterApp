@@ -2,13 +2,12 @@ from flask import Flask, render_template
 from flask import request
 from flask import jsonify
 from datetime import datetime, timedelta, UTC
-from WetterAPI_Backend import get_daten
-from station_def import get_stations, get_wetter
+from getAPI import get_daten
+from getWetter import get_stations, get_wetter
 import pandas
 import requests
 import os
 from dotenv import load_dotenv
-#import json
 
 
 
@@ -124,7 +123,6 @@ def vorhersage(stadt):
     try:
         tage = 3
         daten = get_daten(stadt, tage)
-        # UTC zu Lokalzeit konvertieren
         offset = timedelta(seconds=daten['timezone'])
         for eintrag in daten["list"]:
             utc_time = datetime.fromtimestamp(eintrag["dt"], tz=UTC)
@@ -143,7 +141,6 @@ def wettervorhersage_3_Tage():
         tage = 3
         try:
             daten = get_daten(stadt, tage)
-            #print(json.dumps(daten, indent=2))
             offset = timedelta(seconds=daten['timezone'])
             for eintrag in daten["list"]:
                 utc_time = datetime.fromtimestamp(eintrag["dt"], tz=UTC)
@@ -165,3 +162,4 @@ def impressum():
 
 if __name__ == "__main__":
     app.run(debug=True)
+    #app.run(host='0.0.0.0', port=5000, debug=True)

@@ -2,15 +2,15 @@
 <html lang="de">
 
 <head>
-    <link rel="preload" href="{{ url_for('static', filename='Wetter_Wallpaper.webp') }}" as="image">
-    <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WetterApp</title>
-    <link rel="stylesheet" href="static/pics.css">
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
+    <link rel="preload" href="{{ url_for('static', filename='Wetter_Wallpaper.webp') }}" as="image">
+    <link rel="preload" href="{{ url_for('static', filename='styles.css') }}" as="style">
     <link rel="prefetch" href="{{ url_for('wetterarchiv') }}">
     <link rel="prefetch" href="{{ url_for('wettervorhersage_3_Tage') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
 
@@ -41,8 +41,8 @@
             </div>
         </main>
     </div>
-<br>
-<a class="homepageLink" href="https://www.mguenther-build.de">MGuenther-build.de</a>
-<br>
+<footer class="homepageLink">
+    <a href="https://www.mguenther-build.de">MGuenther-build.de</a>
+</footer>
 </body>
 </html>

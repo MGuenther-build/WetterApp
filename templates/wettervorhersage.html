@@ -2,19 +2,19 @@
 <html lang="de">
 
 <head>
-    <link rel="preload" href="{{ url_for('static', filename='Wetter_Wallpaper.webp') }}" as="image">
-    <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3-Tage-Wettervorhersage</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='pics.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
+    <link rel="preload" href="{{ url_for('static', filename='Wetter_Wallpaper.webp') }}" as="image">
+    <link rel="preload" href="{{ url_for('static', filename='styles.css') }}" as="style">
     <link rel="prefetch" href="{{ url_for('home') }}">
     <link rel="prefetch" href="{{ url_for('wetterarchiv') }}">
     <link rel="prefetch" href="{{ url_for('impressum') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ url_for('static', filename='js/wettervorhersage.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/wettervorhersage.js') }}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -42,11 +42,6 @@
                     </div>
                 </div>
             </form>
-
-            <div id="loading-indicator" class="design-spinner">
-                <div class="spinner"></div>
-            </div>
-
             <div id="forecast-output" class="output fade"></div>
         </main>
     </div>
