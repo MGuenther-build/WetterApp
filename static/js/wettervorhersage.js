@@ -160,17 +160,32 @@ document.addEventListener('DOMContentLoaded', () => {
   const list = document.createElement("ul");
   list.id = "autocomplete-list";
   list.className = "autocomplete-list";
-  wrapper.appendChild(list); 
-
+  wrapper.appendChild(list);
+  
   let timeout = null;
+  
+  form.addEventListener("submit", () => {
+    list.innerHTML = "";
+    list.style.display = "none";
+  });
+  
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      list.innerHTML = "";
+      list.style.display = "none";
+    }
+  });
 
   input.addEventListener("input", () => {
     clearTimeout(timeout);
     const query = input.value.trim();
     if (query.length < 2) {
       list.innerHTML = "";
+      list.style.display = "none";
       return;
     }
+
+    list.style.display = "block";
 
     timeout = setTimeout(() => {
       fetch(`/api/geocode?q=${encodeURIComponent(query)}`)
@@ -183,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
             li.addEventListener("click", () => {
               input.value = item.name;
               list.innerHTML = "";
+              list.style.display = "none";
             });
             list.appendChild(li);
           });
