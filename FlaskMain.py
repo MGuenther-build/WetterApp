@@ -2,8 +2,8 @@ from flask import Flask, render_template
 from flask import request
 from flask import jsonify
 from datetime import datetime, timedelta, UTC
-from getAPI import get_daten
-from getWetter import get_stations, get_wetter
+from getFormat import get_daten
+from getPfad import get_stations, get_wetter
 import pandas
 import requests
 import os
@@ -75,7 +75,6 @@ def geocode():
     ort = request.args.get("q")
     if not ort:
         return jsonify([])
-
     try:
         response = requests.get(
             "http://api.openweathermap.org/geo/1.0/direct",
