@@ -9,8 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
     wetterForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const station = document.getElementById("station").value;
-        const stationName = stationenListe.find(s => s.STAID == station)?.STANAME || station;
+        const stationInput = document.getElementById("stationInput").value;
+        const stationId = stationenListe.find(s => s.STANAME.trim() === stationInput.trim())?.STAID;
+        const stationName = stationenListe.find(s => s.STAID == stationId)?.STANAME || stationInput;
         const dateInput = document.getElementById("date").value;
         const parts = dateInput.split(".");
 
@@ -22,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const [day, month, year] = parts;
         const dateFormatted = `${year}${month.padStart(2, "0")}${day.padStart(2, "0")}`;
-        const apiURL = `/api/v1/${station}/${dateFormatted}`;
+        const apiURL = `/api/v1/${stationId}/${dateFormatted}`;
 
         try {
             const response = await fetch(apiURL);
@@ -39,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <p>🌡️ Temperatur: ${temperatureDisplay}</p>
             `;
 
-            const chartResponse = await fetch(`/api/v1/yearinput/${station}/${year}`);
+            const chartResponse = await fetch(`/api/v1/yearinput/${stationId}/${year}`);
             const chartData = await chartResponse.json();
             const labels = [];
             const temps = [];

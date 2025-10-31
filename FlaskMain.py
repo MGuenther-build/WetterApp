@@ -69,24 +69,6 @@ def temperatur(station, date):
 
 
 
-# Geocoding API
-@app.route("/api/geocode")
-def geocode():
-    ort = request.args.get("q")
-    if not ort:
-        return jsonify([])
-    try:
-        response = requests.get(
-            "http://api.openweathermap.org/geo/1.0/direct",
-            params={"q": ort, "limit": 10, "appid": os.getenv("API_KEY")}
-        )
-        data = response.json()
-        return jsonify(data)
-    except Exception as e:
-        return jsonify([]), 500
-    
-
-
 # Wetterarchiv - Backend-Routine für Wetterstation
 @app.route("/api/v1/<station>")
 def alle_daten_einer_station(station):
@@ -102,10 +84,10 @@ def alle_daten_einer_station(station):
 
 
 # Wetterarchiv - Backend-Routine für Jahr/Jahrescharts
-@app.route("/api/v1/yearinput/<station>/<year>")
-def jahreschart(station, year):
+@app.route("/api/v1/yearinput/<stationId>/<year>")
+def jahreschart(stationId, year):
     try:
-        wetterdaten = get_wetter(station)
+        wetterdaten = get_wetter(stationId)
         df = pandas.read_csv(wetterdaten, skiprows=20)
         df["    DATE"] = df["    DATE"].astype(str)
         jahre = df[df["    DATE"].str.startswith(str(year))].to_dict(orient="records")
@@ -114,6 +96,24 @@ def jahreschart(station, year):
         return jsonify({"Error": str(e)}), 404
     except Exception as e:
         return jsonify({"Error": f"Fehler beim Erstellen der Charts"}), 500
+
+
+
+# Geocoding API
+@app.route("/api/geocode")
+def geocode():
+    ort = request.args.get("q")
+    if not ort:
+        return jsonify([])
+    try:
+        response = requests.get(
+            "http://api.openweathermap.org/geo/1.0/direct",
+            params={"q": ort, "limit": 10, "appid": os.getenv("API_KEY")}
+        )
+        data = response.json()
+        return jsonify(data)
+    except Exception as e:
+        return jsonify([]), 500
 
 
 

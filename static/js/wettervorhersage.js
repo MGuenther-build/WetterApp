@@ -86,11 +86,16 @@ document.addEventListener('DOMContentLoaded', () => {
             Object.keys(tage).forEach(tag => {
                 const canvasId = `tempChart-${tag}`;
                 const canvas = document.getElementById(canvasId);
-                if (!canvas) return;
+                if (!canvas) 
+                    return;
                 const ctx = canvas.getContext('2d');
+                const scale = window.devicePixelRatio || 1;
+                const pointSize = 4 * scale;
+
+                Chart.defaults.events = ['touchstart', 'touchmove', 'click', 'mousemove'];
 
                 if (window.charts[canvasId]) window.charts[canvasId].destroy();
-                
+
                 window.charts[canvasId] = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -101,15 +106,21 @@ document.addEventListener('DOMContentLoaded', () => {
                             borderColor: '#FF9900',
                             backgroundColor: 'rgba(0,0,0,0.5)',
                             tension: 0.3,
-                            pointRadius: 5,
-                            pointHoverRadius: 7,
+                            pointRadius: pointSize,
+                            pointHoverRadius: pointSize + 2,
+                            pointHitRadius: pointSize + 4,
                             pointBackgroundColor: '#2B1B04'
                         }]
                     },
                     options: {
+                        responsive: true,
+                        interaction: { mode: 'nearest', intersect: true, },
                         plugins: {
                             legend: { display: false },
                             tooltip: {
+                                enabled: true,
+                                mode: 'nearest',
+                                intersect: true,
                                 callbacks: {
                                     label: function(context) {
                                             const index = context.dataIndex;
@@ -117,7 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                         function beaufort(ms) {
                                             const bft = [0.3, 1.5, 3.3, 5.4, 7.9, 10.7, 13.8, 17.1, 20.7, 24.4, 28.4, 32.6];
                                             for (let i = 0; i < bft.length; i++) {
-                                                if (ms <= bft[i]) return i;
+                                                if (ms <= bft[i]) 
+                                                    return i;
                                             }
                                             return 12;
                                         }
@@ -125,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                             `Temperatur: ${Math.round(e.main.temp)}°C`,
                                             `Luftfeuchtigkeit: ${e.main.humidity}%`,
                                             `Gefühlte Temperatur: ${Math.round(e.main.feels_like)}°C`,
-                                            `Windstärke (Bft): ${beaufort(e.wind?.speed)}`,e.wind?.gust ? `Böen: ${Math.round(e.wind.gust * 3.6)} km/h` : null
+                                            `Windstärke (Bft): ${beaufort(e.wind?.speed)}`, e.wind?.gust && e.wind?.gust * 3.6 >= 20 ? `Böen: ${Math.round(e.wind.gust * 3.6)} km/h` : null
                                         ].filter(Boolean);
                                     }
                                 }
@@ -140,6 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         }
                     }
+                });
+                canvas.addEventListener('touchend', () => {
+                    window.charts[canvasId].tooltip.setActiveElements([], { x: 0, y: 0 });
+                    window.charts[canvasId].update();
                 });
             });
             hideSpinner();

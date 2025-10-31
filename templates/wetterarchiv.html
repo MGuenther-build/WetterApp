@@ -22,6 +22,7 @@
         <div class="spinner"></div>
     </div>
     <nav class="topbar">
+        <div class="menu-toggle" id="mobile-menu">☰</div>
         <ul>
             <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="{{ url_for('wettervorhersage_3_Tage')}}">Vorhersage</a></li>
@@ -34,14 +35,15 @@
             <form id="wetterForm">
                 <div class="form-group">
                     <p class="abfrage-label">Abfrage starten</p>
-                    <br></br>
-                    <label for="station">📍 Wetterstation:</label>
-                    <select id="station" name="station" required>
-                        <option value="" disabled selected>Ort wählen ...</option>
-                        {% for station in stationen %}
-                            <option value="{{station.STAID}}">{{station.STANAME}}</option>
-                        {% endfor %}
-                    </select>
+                    <br>
+                   <label for="stationInput">📍 Wetterstation:</label>
+                    <input type="text" id="stationInput" list="stationenList" placeholder="Ort eingeben oder wählen …" required>
+                    <input type="hidden" id="station" name="station">
+                    <datalist id="stationenList">
+                    {% for station in stationen %}
+                        <option value="{{station.STANAME}}" data-staid="{{station.STAID}}"></option>
+                    {% endfor %}
+                    </datalist>
                 </div>
 
                 <div class="form-group">
