@@ -8,16 +8,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     wetterForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-
-        const stationInput = document.getElementById("stationInput").value;
-        const stationId = stationenListe.find(s => s.STANAME.trim() === stationInput.trim())?.STAID;
-        const stationName = stationenListe.find(s => s.STAID == stationId)?.STANAME || stationInput;
+        document.getElementById("chartInfo").innerHTML = "";
+        
+        const stationInputRaw = document.getElementById("stationInput").value;
+        const stationInput = stationInputRaw.trim().toUpperCase();
+        const matchedStation = stationenListe.find(s => s.STANAME_CLEAN === stationInput);
+        if (!matchedStation) {
+            showError("❌ Kein Ort mit diesem Namen gefunden!");
+            return;
+        }
+        const stationId = matchedStation.STAID;
+        const stationName = matchedStation.STANAME;
         const dateInput = document.getElementById("date").value;
         const parts = dateInput.split(".");
-
         if (parts.length !== 3) {
-            document.getElementById("result").innerHTML =
-                `<p>❌ Ungültiges Datum. Bitte im Format TT.MM.JJJJ eingeben.</p>`;
+            showError("❌ Ungültiges Datum. Bitte im Format TT.MM.JJJJ eingeben.");
             return;
         }
 
@@ -99,9 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 100);
 
         } catch (error) {
-            console.error(error);
-            document.getElementById("result").innerHTML =
-                `<p>❌ Fehler bei der Abfrage.</p>`;
+            showError("❌ Fehler bei der Abfrage!");
         }
     });
 });

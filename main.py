@@ -1,20 +1,16 @@
-from flask import Flask, render_template
+from flask import Flask
+from flask import render_template
 from flask import request
 from flask import jsonify
 from datetime import datetime, timedelta, UTC
-from getFormat import get_daten
-from getPfad import get_stations, get_wetter
+from backend.getAPI import get_daten
+from backend.getGEO import geocode
+from backend.getPfad import get_stations, get_wetter
 import pandas
-import requests
-import os
-from dotenv import load_dotenv
 
 
 
 app = Flask(__name__)
-
-load_dotenv()
-API_KEY = os.getenv("API_KEY")
 
 
 
@@ -31,8 +27,10 @@ def wetterarchiv():
         stationen = pandas.read_csv(stationenpfad, skiprows=17)
         stationen.columns = stationen.columns.str.strip()
         stationen = stationen[["STAID", "STANAME"]]
+        stationen["STANAME"] = stationen["STANAME"].str.strip().str.upper()
         stationen = stationen.sort_values("STANAME")
-        stationen_liste = stationen.to_dict(orient="records")
+        stationen["STANAME_CLEAN"] = stationen["STANAME"].str.strip().str.upper()
+        stationen_liste = stationen[["STAID", "STANAME", "STANAME_CLEAN"]].to_dict(orient="records")
         stationen_html = stationen.to_html(index=False)                         # Index=False, weil sonst Pandas Dataframe links eine ID-Spalte setzt
         jahre = list(range(1860,2022))
         return render_template ("wetterarchiv.html",
@@ -51,7 +49,7 @@ def temperatur(station, date):
     df = pandas.read_csv(wetterdaten, skiprows=20, parse_dates=["    DATE"])
     temperatur_als_serie = df.loc[df["    DATE"] == date] ["   TG"]
     if temperatur_als_serie.empty:
-        temperatur = "keine Daten vorhanden<br>- möglicherweise liegt die Datumseingabe außerhalb des Aufzeichnungszeitraums -"
+        temperatur = "keine Daten vorhanden<br> (möglicherweise liegt die Datumseingabe außerhalb des Aufzeichnungszeitraums)"
     else:
         temperatur_wert = temperatur_als_serie.iloc[0] / 10
         if temperatur_wert < -100:
@@ -99,24 +97,12 @@ def jahreschart(stationId, year):
 
 
 
-# Geocoding API
-@app.route("/api/geocode")
-def geocode():
-    ort = request.args.get("q")
-    if not ort:
-        return jsonify([])
-    try:
-        response = requests.get(
-            "http://api.openweathermap.org/geo/1.0/direct",
-            params={"q": ort, "limit": 10, "appid": os.getenv("API_KEY")}
-        )
-        data = response.json()
-        return jsonify(data)
-    except Exception as e:
-        return jsonify([]), 500
+# GEOCODE API
+geocode(app)
 
 
 
+# Wettervorhersage
 @app.route("/vorhersage/<stadt>")
 def vorhersage(stadt):
     try:
@@ -133,6 +119,7 @@ def vorhersage(stadt):
 
 
 
+# Wettervorhersage
 @app.route("/3-Tage-Wetter", methods=["GET", "POST"])
 def wettervorhersage_3_Tage():
     if request.method == "POST":

@@ -164,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (forecastSection) forecastSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         } catch (err) {
-            console.error(err);
             hideSpinner();
             output.innerHTML = '<p>Fehler beim Laden der Daten</p>';
             hideSpinner();

@@ -5,10 +5,7 @@ function hideSpinner() {
 
 function showSpinner() {
   const spinner = document.getElementById('global-loading-indicator');
-  if (spinner) {
-    spinner.style.display = 'block';
-    setTimeout(hideSpinner, 3000);
-  }
+  if (spinner) spinner.style.display = 'block';
 }
 
 function fadeTransition({ elements, fadeOutClass = 'fade-out', fadeInClass = 'fade', onComplete }) {
@@ -62,7 +59,7 @@ function initPage() {
     navList.querySelectorAll('a').forEach(link => {
       link.onclick = (e) => {
         navList.classList.remove('show');
-        handleInternalNavigation(e, link.href);
+        handleNavigation(e, link.href);
       };
     });
   }
@@ -77,22 +74,22 @@ function initPage() {
   });
 
   document.querySelectorAll('a:not(.topbar a)').forEach(link => {
-    link.onclick = (e) => handleInternalNavigation(e, link.href);
+    link.onclick = (e) => handleNavigation(e, link.href);
   });
+}
 
-  document.getElementById('wetterForm').addEventListener('submit', function (e) {
-  const input = document.getElementById('stationInput');
-  const hidden = document.getElementById('station');
-  const datalist = document.getElementById('stationenList');
+function showError(message) {
+  const errorBox = document.getElementById("errorMessage");
+  if (!errorBox) 
+    return;
 
-  const match = Array.from(datalist.options).find(opt => opt.value.trim() === input.value.trim());
-  if (match) {
-    hidden.value = match.dataset.staid;
-  } else {
-    e.preventDefault();
-    alert("❌ Kein Ort mit diesem Namen gefunden!");
-  }
-});
+  errorBox.textContent = message;
+  errorBox.style.display = "block";
+
+  setTimeout(() => {
+    errorBox.style.display = "none";
+    errorBox.textContent = "";
+  }, 3000);
 }
 
 function handleInternalNavigation(e, targetUrl) {
@@ -112,10 +109,51 @@ function handleInternalNavigation(e, targetUrl) {
   fadeTransition({
     elements: elementsToFade,
     onComplete: () => {
-      window.location.href = targetUrl;
+      history.pushState(null, '', targetUrl);
+      loadPage(targetUrl);
     }
   });
 }
+
+async function loadPage(url) {
+  showSpinner();
+  fetch(url)
+    .then(response => response.text())
+    .then(html => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+
+      const newMain = doc.querySelector('.main-wrapper');
+      const newSubsite = doc.querySelector('.main-wrapper-subsites');
+      const newImpressum = doc.querySelector('.main-wrapper-impressum');
+
+      const containerMain = document.querySelector('.main-wrapper');
+      const containerSubsite = document.querySelector('.main-wrapper-subsites');
+      const containerImpressum = document.querySelector('.main-wrapper-impressum');
+
+      if (newMain && containerMain) {
+        containerMain.innerHTML = newMain.innerHTML;
+      } else if (newSubsite && containerSubsite) {
+        containerSubsite.innerHTML = newSubsite.innerHTML;
+      } else if (newImpressum && containerImpressum) {
+        containerImpressum.innerHTML = newImpressum.innerHTML;
+      } else {
+        window.location.href = url;
+        return;
+      }
+
+      initPage();
+      hideSpinner();
+    })
+    .catch(err => {
+      console.error('Fehler beim Laden der Seite:', err);
+      window.location.href = url;
+    });
+}
+
+window.addEventListener('popstate', () => {
+  loadPage(location.href);
+});
 
 // Initialisierung //
 window.addEventListener('DOMContentLoaded', initPage);
