@@ -262,7 +262,7 @@ body {
   }
 }
 #result p {
-  animation: fadeIn 0.6s ease;
+  animation: fadeIn 0.2s ease;
 }
 @keyframes fadeIn {
   from { 
