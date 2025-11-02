@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <p>📅 Datum: ${data.date}</p>
                 <p>🌡️ Temperatur: ${temperatureDisplay}</p>
             `;
-
+            
             const chartResponse = await fetch(`/api/v1/yearinput/${stationId}/${year}`);
             const chartData = await chartResponse.json();
             const labels = [];
@@ -60,8 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     temps.push(temp / 10);
                 }
             });
-
-            chartContainer.classList.add("visible");
 
             if (window.chartInstance) {
                 window.chartInstance.destroy();
@@ -82,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }]
                 },
                 options: {
+                    responsive: true,
                     plugins: {
                         tooltip: {
                             enabled: true,
@@ -91,17 +90,29 @@ document.addEventListener("DOMContentLoaded", () => {
                         },
                         legend: { display: false }
                     },
-                    responsive: true,
-                    animation: { duration: 3000, easing: "easeInOutCubic" },
+                    animation: { 
+                        duration: 1500,
+                        easing: "linear",
+                        onProgress: function(animation) {
+                            const chart = animation.chart;
+                            chart.data.datasets.forEach((dataset) => {
+                                dataset._meta = dataset._meta || {};
+                                dataset._meta.hidden = false;
+                            });
+                        },
+                        onComplete: () => {
+                            const chartWrapper = document.getElementById("chartContainer");
+                            chartWrapper.classList.add("visible");
+                            chartWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
+                        } 
+                    },
                     scales: {
                         y: { title: { display: true, text: "Temperatur in Celsius" } },
                         x: { ticks: { maxTicksLimit: 12 } }
                     }
                 }
             });
-            setTimeout(() => {
-                chartContainer.scrollIntoView({ behavior: "smooth", block: "start" });
-            }, 100);
+            history.replaceState(null, "", "/Wetterarchiv");
 
         } catch (error) {
             showError("❌ Fehler bei der Abfrage!");

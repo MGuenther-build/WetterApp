@@ -262,7 +262,7 @@ body {
   }
 }
 #result p {
-  animation: fadeIn 0.2s ease;
+  animation: fadeIn 0.1s ease;
 }
 @keyframes fadeIn {
   from { 
@@ -294,6 +294,7 @@ body {
   border-radius: 0.75rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 3, 10, 0.2);
   width: 90vw;
+  height: 95vh;
   opacity: 0;
 }
 @media (max-width: 768px) {
@@ -340,38 +341,6 @@ canvas#chart {
 
 
 
-#global-loading-indicator {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-}
-.spinner {
-  border: 0.5rem solid #f3f3f3;
-  border-top: 0.5rem solid #1c64ab;
-  border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
-  animation: spin 1s linear infinite;
-  margin: auto;
-}
-@keyframes spin {
-  0% { 
-    transform: rotate(0deg); 
-  }
-  100% { 
-    transform: rotate(360deg); 
-  }
-}
-.design-spinner {
-  display: none;
-  text-align:center;
-  margin: 1rem 0;
-}
-
-
-
 .fade, .fade-out {
   will-change: opacity, scale, filter;
   position: relative;
@@ -412,7 +381,7 @@ canvas#chart {
 
 .topbar {
   position: sticky;
-  display: flex;
+  display: flex !important;
   justify-content: center;
   align-items: center;
   font-weight: 600;
@@ -518,12 +487,13 @@ canvas#chart {
     text-align: left;
   }
   .topbar li a {
-    display: block;
+    display: inline-block;
     width: 100%;
-    padding: 1rem 0.5rem;
+    padding: 1rem 1rem;
     font-size: 1rem;
     color: white;
     text-align: left;
+    transition: color 0.3s ease; 
   }
   .topbar li::before {
     display: none;

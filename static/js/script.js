@@ -1,12 +1,3 @@
-function hideSpinner() {
-  const spinner = document.getElementById('global-loading-indicator');
-  if (spinner) spinner.style.display = 'none';
-}
-
-function showSpinner() {
-  const spinner = document.getElementById('global-loading-indicator');
-  if (spinner) spinner.style.display = 'block';
-}
 
 function fadeTransition({ elements, fadeOutClass = 'fade-out', fadeInClass = 'fade', onComplete }) {
   elements.forEach(el => {
@@ -17,12 +8,13 @@ function fadeTransition({ elements, fadeOutClass = 'fade-out', fadeInClass = 'fa
 
   const primary = elements[0];
   if (primary) {
-  const onEnd = () => onComplete?.();
-  primary.addEventListener('animationend', onEnd, { once: true });
-  primary.addEventListener('transitionend', onEnd, { once: true });
+    const onEnd = () => onComplete?.();
+    primary.addEventListener('animationend', onEnd, { once: true });
+    primary.addEventListener('transitionend', onEnd, { once: true });
+  }
 }
 
-}
+
 
 function decodeEmail() {
   const parts = ["UHJvdG9vbHMxODAy", "Z21haWwuY29t"];
@@ -31,13 +23,31 @@ function decodeEmail() {
   if (emailSpan) emailSpan.textContent = email;
 }
 
+
+
+function initBurgermenu() {
+    const menuButton = document.getElementById('mobile-menu');
+    const navList = document.querySelector('.topbar ul');
+
+    if (!menuButton || !navList) 
+      return;
+
+    menuButton.onclick = (e) => {
+        e.stopPropagation();
+        navList.classList.toggle('show');
+    };
+
+    document.addEventListener('click', (e) => {
+        if (!navList.contains(e.target) && !menuButton.contains(e.target)) {
+            navList.classList.remove('show');
+        }
+    });
+}
+
+
+
 function initPage() {
   decodeEmail();
-
-  document.querySelectorAll('.fade-out').forEach(el => {
-    el.classList.remove('fade-out');
-    el.classList.add('fade');
-  });
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -49,34 +59,14 @@ function initPage() {
   });
   document.querySelectorAll(".fade-trigger").forEach(el => observer.observe(el));
 
-  const menuButton = document.getElementById('mobile-menu');
-  const navList = document.querySelector('.topbar ul');
-  if (menuButton && navList) {
-    menuButton.onclick = (e) => {
-      e.stopPropagation();
-      navList.classList.toggle('show');
-    };
-    navList.querySelectorAll('a').forEach(link => {
-      link.onclick = (e) => {
-        navList.classList.remove('show');
-        handleNavigation(e, link.href);
-      };
-    });
-  }
-
-  document.addEventListener('click', (e) => {
-    const clickedInsideMenu = navList.contains(e.target);
-    const clickedToggle = menuButton.contains(e.target);
-
-    if (!clickedInsideMenu && !clickedToggle) {
-      navList.classList.remove('show');
-    }
-  });
-
   document.querySelectorAll('a:not(.topbar a)').forEach(link => {
     link.onclick = (e) => handleNavigation(e, link.href);
   });
+
+  initBurgermenu();
 }
+
+
 
 function showError(message) {
   const errorBox = document.getElementById("errorMessage");
@@ -91,6 +81,8 @@ function showError(message) {
     errorBox.textContent = "";
   }, 3000);
 }
+
+
 
 function handleNavigation(e, targetUrl) {
   if (!targetUrl || !targetUrl.startsWith(location.origin)) 
@@ -114,44 +106,50 @@ function handleNavigation(e, targetUrl) {
   });
 }
 
+
+
 async function loadPage(url) {
-  fetch(url)
-    .then(response => response.text())
-    .then(html => {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
+  try {
+    const response = await fetch(url);
+    const html = await response.text();
 
-      const newMain = doc.querySelector('.main-wrapper');
-      const newSubsite = doc.querySelector('.main-wrapper-subsites');
-      const newImpressum = doc.querySelector('.main-wrapper-impressum');
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
 
-      const containerMain = document.querySelector('.main-wrapper');
-      const containerSubsite = document.querySelector('.main-wrapper-subsites');
-      const containerImpressum = document.querySelector('.main-wrapper-impressum');
+    const newMain = doc.querySelector('.main-wrapper');
+    const newSubsite = doc.querySelector('.main-wrapper-subsites');
+    const newImpressum = doc.querySelector('.main-wrapper-impressum');
 
-      if (newMain && containerMain) {
-        containerMain.innerHTML = newMain.innerHTML;
-      } else if (newSubsite && containerSubsite) {
-        containerSubsite.innerHTML = newSubsite.innerHTML;
-      } else if (newImpressum && containerImpressum) {
-        containerImpressum.innerHTML = newImpressum.innerHTML;
-      } else {
-        window.location.href = url;
-        return;
-      }
+    const containerMain = document.querySelector('.main-wrapper');
+    const containerSubsite = document.querySelector('.main-wrapper-subsites');
+    const containerImpressum = document.querySelector('.main-wrapper-impressum');
 
-      initPage();
-
-    })
-    .catch(err => {
-      console.error('Fehler beim Laden der Seite:', err);
+    if (newMain && containerMain) {
+      containerMain.innerHTML = newMain.innerHTML;
+    } else if (newSubsite && containerSubsite) {
+      containerSubsite.innerHTML = newSubsite.innerHTML;
+    } else if (newImpressum && containerImpressum) {
+      containerImpressum.innerHTML = newImpressum.innerHTML;
+    } else {
       window.location.href = url;
-    });
+      return;
+    }
+
+    initPage();
+
+  } catch (err) {
+    console.error('Fehler beim Laden der Seite:', err);
+    window.location.href = url;
+  }
 }
+
+
 
 window.addEventListener('popstate', () => {
   loadPage(location.href);
 });
+
+
 
 // Initialisierung //
 window.addEventListener('DOMContentLoaded', initPage);

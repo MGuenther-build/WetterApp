@@ -2,6 +2,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('wetterFormVorhersage');
     const output = document.getElementById('forecast-output');
+    const input = document.getElementById("stadt");
+    const wrapper = document.querySelector(".autocomplete-wrapper");
+    const list = document.createElement("ul");
+    list.id = "autocomplete-list";
+    list.className = "autocomplete-list";
+    wrapper.appendChild(list);
+    if (window.location.search.includes("stadt=")) {
+        window.history.replaceState(null, '', '/3-Tage-Wetter');
+    }
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -12,15 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!stadt) 
             return;
 
-        showSpinner();
-
         try {
             const response = await fetch(`/vorhersage/${stadt}`);
             const daten = await response.json();
 
             if (daten.error) {
                 output.innerHTML = `<h2>${daten.error}</h2>`;
-                hideSpinner();
                 return;
             }
             const tage = {};
@@ -82,6 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
             html += '</div>';
             output.innerHTML = html;
 
+            const newUrl = `/3-Tage-Wetter?stadt=${encodeURIComponent(stadt)}`;
+            window.history.replaceState(null, '', newUrl);
             window.charts = window.charts || {};
             Object.keys(tage).forEach(tag => {
                 const canvasId = `tempChart-${tag}`;
@@ -158,26 +166,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.charts[canvasId].update();
                 });
             });
-            hideSpinner();
 
             const forecastSection = document.getElementById('scroll-forecast');
             if (forecastSection) forecastSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         } catch (err) {
-            hideSpinner();
             output.innerHTML = '<p>Fehler beim Laden der Daten</p>';
-            hideSpinner();
         }
     });
-
-  const input = document.getElementById("stadt");
-  const wrapper = document.querySelector(".autocomplete-wrapper");
-  const list = document.createElement("ul");
-  list.id = "autocomplete-list";
-  list.className = "autocomplete-list";
-  wrapper.appendChild(list);
-  
-  let timeout = null;
   
   form.addEventListener("submit", () => {
     list.innerHTML = "";
@@ -191,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  let timeout = null;
   input.addEventListener("input", () => {
     clearTimeout(timeout);
     const query = input.value.trim();
