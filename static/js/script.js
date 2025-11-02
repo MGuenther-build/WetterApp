@@ -17,10 +17,11 @@ function fadeTransition({ elements, fadeOutClass = 'fade-out', fadeInClass = 'fa
 
   const primary = elements[0];
   if (primary) {
-    primary.addEventListener('animationend', () => {
-      onComplete?.();
-    }, { once: true });
-  }
+  const onEnd = () => onComplete?.();
+  primary.addEventListener('animationend', onEnd, { once: true });
+  primary.addEventListener('transitionend', onEnd, { once: true });
+}
+
 }
 
 function decodeEmail() {
@@ -31,7 +32,6 @@ function decodeEmail() {
 }
 
 function initPage() {
-  hideSpinner();
   decodeEmail();
 
   document.querySelectorAll('.fade-out').forEach(el => {
@@ -92,12 +92,11 @@ function showError(message) {
   }, 3000);
 }
 
-function handleInternalNavigation(e, targetUrl) {
+function handleNavigation(e, targetUrl) {
   if (!targetUrl || !targetUrl.startsWith(location.origin)) 
     return;
 
   e.preventDefault();
-  showSpinner();
 
   const elementsToFade = [
     document.querySelector('.main-wrapper'),
@@ -116,7 +115,6 @@ function handleInternalNavigation(e, targetUrl) {
 }
 
 async function loadPage(url) {
-  showSpinner();
   fetch(url)
     .then(response => response.text())
     .then(html => {
@@ -143,7 +141,7 @@ async function loadPage(url) {
       }
 
       initPage();
-      hideSpinner();
+
     })
     .catch(err => {
       console.error('Fehler beim Laden der Seite:', err);

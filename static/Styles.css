@@ -373,7 +373,7 @@ canvas#chart {
 
 
 .fade, .fade-out {
-  will-change: opacity, transform, filter;
+  will-change: opacity, scale, filter;
   position: relative;
   z-index: 1;
 }
@@ -383,39 +383,28 @@ canvas#chart {
 @keyframes fadeDown {
   from {
     opacity: 0;
-    transform: translateY(-33%);
+    scale: 0;
     filter: blur(4px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
     filter: blur(0);
   }
 }
 
 .fade-out {
-  animation: fadeOut 2.0s ease forwards;
+  animation: fadeOut 1.5s ease forwards;
+  pointer-events: none;
 }
 @keyframes fadeOut {
   from {
     opacity: 1;
-    transform: translateY(0);
     filter: blur(0);
   }
   to {
     opacity: 0;
-    transform: translateY(-33%);
-    filter: blur(6px);
-  }
-}
-@keyframes slideFadeIn {
-  0% {
-    transform: translateY(-33%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
+    scale: 0;
+    filter: blur(4px);
   }
 }
 
