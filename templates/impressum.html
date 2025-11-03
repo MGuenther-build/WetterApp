@@ -1,83 +1,63 @@
-<!DOCTYPE html>
-<html lang="de">
+{% extends "layouts/index.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impressum</title>
-    <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
-    <link rel="preload" href="{{ url_for('static', filename='Wallpaper.webp') }}" as="image">
-    <link rel="preload" href="{{ url_for('static', filename='styles.css') }}" as="style">
-    <link rel="prefetch" href="{{ url_for('home') }}">
-    <link rel="prefetch" href="{{ url_for('wetterarchiv') }}">
-    <link rel="prefetch" href="{{ url_for('wettervorhersage_3_Tage') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
-</head>
+{% block title %}WetterApp - Impressum{% endblock %}
 
-<body>
-    <div id="global-loading-indicator" class="design-spinner">
-        <div class="spinner"></div>
-    </div>
-    <nav class="topbar">
-        <div class="menu-toggle" id="mobile-menu">☰</div>
-        <ul>
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('wetterarchiv')}}">Wetterarchiv</a></li>
-            <li><a href="{{ url_for('wettervorhersage_3_Tage')}}">Vorhersage</a></li>
-        </ul>
-    </nav>
-    <div class="main-wrapper-impressum fade">
-        <main class="content">
-            <h1 class="impressum-text1">
-                Impressum
-            </h1>
+{% block topbar %}
+    {% include "layouts/topbar.html" %}
+{% endblock %}
 
-            <h2 class="impressum-text2">
-                Webseiteninhaber:
-            </h2>
+{% block content %}
 
-            <h3 class="impressum-text3">
-                Martin Günther<br>
-                D 10318 - Berlin<br>
-                E-Mail: &nbsp;<span id="email"></span>
-                <noscript><span class="noscript-email">Protools1802 [ät] gmail [punkt] com</span></noscript>
-            </h3>
+<div class="main-wrapper-impressum fade">
+    <main class="content">
+        <h1 class="impressum-text1">
+            Impressum
+        </h1>
 
-            <p class="impressum-text4">
-                <b class="impressum-text4-sub">
-                    Haftungsausschuss:
-                </b>
-                <br>
-            </p>
+        <h2 class="impressum-text2">
+            Webseiteninhaber:
+        </h2>
 
-            <p class="impressum-textMain">
-                        <b class="impressum-textMain-Fett">Haftung für Inhalte</b><br>
-                        Die Inhalte dieser Seite wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann ich jedoch 
-                        keine Gewähr übernehmen. Gemäß § 7 Abs.1 Digitale-Dienste-Gesetz (DDG) bin ich für eigene Inhalte verantwortlich, aber gemäß §§ 8 bis 10 DDG bin 
-                        ich nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige 
-                        Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon 
-                        unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von 
-                        entsprechenden Rechtsverletzungen werde ich diese Inhalte umgehend entfernen.<br>
-                        <br>
-                        <b b class="impressum-textMain-Fett">Urheberrecht</b><br>
-                        Sofern nicht anders gekennzeichnet, stelle ich diese Inhalte zur privaten und kommerziellen Nutzung frei.<br>
-                        Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte 
-                        Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten ich um entsprechende Hinweise, 
-                        damit ich derartige Inhalte umgehend entfernen kann oder mit entsprechenden Quellennachweis versehen kann.<br>
-                        Abschließend weise ich ausdrücklich  darauf hin, dass die bereitgestellte Webseite ohne jegliche Gewährleistung zur Verfügung gestellt wird.<br>
-                        <br>
-                        Die Nutzung erfolgt auf eigene Gefahr. Ich übernehme keinerlei Haftung für Schäden, die durch die Nutzung entstehen.</br>
-                        <br>
-                        <b b class="impressum-textMain-Fett">Datenschutz</b><br>
-                        Diese Webseite benutzt keine Cookies, Disclaimers, Analysetools o.ä. Die Nutzung ist ganz ohne Angabe von personenbezogenen Daten möglich.
-                        Eingaben in die Suchfelder vom Wetterarchiv und der Wettervorhersage werden weder gespeichert noch getrackt oder analysiert. Es gilt allerdings 
-                        zu beachten, dass ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte technisch nicht möglich ist.<br>
-                        <br>
-                        Es ist ausdrücklich nicht erwünscht, dass über die im Impressum veröffentlichten Kontaktdaten Werbung ("Spam") übermittelt wird!<br>
-                        <br>
-            </p>
-        </main>
-    </div>
-</body>
-</html>
+        <h3 class="impressum-text3">
+            Martin Günther<br>
+            D 10318 - Berlin<br>
+            E-Mail: &nbsp;<span id="email"></span>
+            <noscript><span class="noscript-email">Protools1802 [ät] gmail [punkt] com</span></noscript>
+        </h3>
+
+        <p class="impressum-text4">
+            <b class="impressum-text4-sub">
+                Haftungsausschuss:
+            </b>
+            <br>
+        </p>
+
+        <p class="impressum-textMain">
+                    <b class="impressum-textMain-Fett">Haftung für Inhalte</b><br>
+                    Die Inhalte dieser Seite wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte kann ich jedoch 
+                    keine Gewähr übernehmen. Gemäß § 7 Abs.1 Digitale-Dienste-Gesetz (DDG) bin ich für eigene Inhalte verantwortlich, aber gemäß §§ 8 bis 10 DDG bin 
+                    ich nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige 
+                    Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon 
+                    unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von 
+                    entsprechenden Rechtsverletzungen werde ich diese Inhalte umgehend entfernen.<br>
+                    <br>
+                    <b b class="impressum-textMain-Fett">Urheberrecht</b><br>
+                    Sofern nicht anders gekennzeichnet, stelle ich diese Inhalte zur privaten und kommerziellen Nutzung frei.<br>
+                    Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte 
+                    Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten ich um entsprechende Hinweise, 
+                    damit ich derartige Inhalte umgehend entfernen kann oder mit entsprechenden Quellennachweis versehen kann.<br>
+                    Abschließend weise ich ausdrücklich  darauf hin, dass die bereitgestellte Webseite ohne jegliche Gewährleistung zur Verfügung gestellt wird.<br>
+                    <br>
+                    Die Nutzung erfolgt auf eigene Gefahr. Ich übernehme keinerlei Haftung für Schäden, die durch die Nutzung entstehen.</br>
+                    <br>
+                    <b b class="impressum-textMain-Fett">Datenschutz</b><br>
+                    Diese Webseite benutzt keine Cookies, Disclaimers, Analysetools o.ä. Die Nutzung ist ganz ohne Angabe von personenbezogenen Daten möglich.
+                    Eingaben in die Suchfelder vom Wetterarchiv und der Wettervorhersage werden weder gespeichert noch getrackt oder analysiert. Es gilt allerdings 
+                    zu beachten, dass ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte technisch nicht möglich ist.<br>
+                    <br>
+                    Es ist ausdrücklich nicht erwünscht, dass über die im Impressum veröffentlichten Kontaktdaten Werbung ("Spam") übermittelt wird!<br>
+                    <br>
+        </p>
+    </main>
+</div>
+{% endblock %}

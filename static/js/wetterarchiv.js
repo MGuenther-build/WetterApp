@@ -1,7 +1,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     const wetterForm = document.getElementById("wetterForm");
-    const chartContainer = document.getElementById("chartContainer");
+    const chartWrapper = document.getElementById("chartContainer");
     const stationenScript = document.getElementById("stationen-data");
     const stationenListe = stationenScript ? JSON.parse(stationenScript.textContent) : [];
 
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const stationInput = stationInputRaw.trim().toUpperCase();
         const matchedStation = stationenListe.find(s => s.STANAME_CLEAN === stationInput);
         if (!matchedStation) {
-            showError("❌ Kein Ort mit diesem Namen gefunden!");
+            alert("❌ Kein Ort mit diesem Namen gefunden!");
             return;
         }
         const stationId = matchedStation.STAID;
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const dateInput = document.getElementById("date").value;
         const parts = dateInput.split(".");
         if (parts.length !== 3) {
-            showError("❌ Ungültiges Datum. Bitte im Format TT.MM.JJJJ eingeben.");
+            alert("❌ Ungültiges Datum. Bitte im Format TT.MM.JJJJ eingeben.");
             return;
         }
 
@@ -101,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             });
                         },
                         onComplete: () => {
-                            const chartWrapper = document.getElementById("chartContainer");
                             chartWrapper.classList.add("visible");
                             chartWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
                         } 
@@ -115,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
             history.replaceState(null, "", "/Wetterarchiv");
 
         } catch (error) {
-            showError("❌ Fehler bei der Abfrage!");
+            alert("❌ Fehler bei der Abfrage!");
         }
     });
 });

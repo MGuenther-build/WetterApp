@@ -1,0 +1,29 @@
+{% extends "layouts/index.html" %}
+
+{% block title %}WetterApp - Home{% endblock %}
+
+{% block content %}
+<div class="main-wrapper fade">
+    <main class="content">
+        <h1 class=banner>WetterApp</h1>
+
+        <div class="home-kacheln">
+            <a href="{{url_for('wetterarchiv')}}" class="card-link">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='Wetterarchiv.png') }}" class="portrait" alt="Wetterarchiv">
+                    <h2>Wetterarchiv</h2>
+                    <p>Abfrage von historischen Temperaturen europäischer Wetterstationen von 1860 bis 2022.</p>
+                </div>
+            </a>
+
+            <a href="{{url_for('wettervorhersage_3_Tage')}}" class="card-link">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='WetterAPI.png') }}" class="portrait" alt="Wetter API">
+                    <h2>Wettervorhersage</h2>
+                    <p>Wettervorhersage für die nächsten 3 Tage.</p>
+                </div>
+            </a>
+        </div>
+    </main>
+</div>
+{% endblock %}

@@ -1,46 +1,30 @@
-<!DOCTYPE html>
-<html lang="de">
+{% extends "layouts/index.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3-Tage-Wettervorhersage</title>
-    <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
-    <link rel="preload" href="{{ url_for('static', filename='Wallpaper.webp') }}" as="image">
-    <link rel="preload" href="{{ url_for('static', filename='styles.css') }}" as="style">
-    <link rel="prefetch" href="{{ url_for('home') }}">
-    <link rel="prefetch" href="{{ url_for('wetterarchiv') }}">
-    <link rel="prefetch" href="{{ url_for('impressum') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/wettervorhersage.js') }}" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+{% block title %}WetterApp - Wettervorhersage{% endblock %}
 
-<body>
-    <nav class="topbar">
-        <div class="menu-toggle" id="mobile-menu">☰</div>
-        <ul>
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('wetterarchiv')}}">Wetterarchiv</a></li>
-            <li><a href="{{ url_for('impressum') }}">Impressum</a></li>
-        </ul>
-    </nav>
-    <div class="main-wrapper-subsites fade">
-        <main class="content">
-            <h1 class="banner-vorhersage">3-Tage-Wetter</h1>
+{% block topbar %}
+    {% include "layouts/topbar.html" %}
+{% endblock %}
 
-            <form id="wetterFormVorhersage">
-                <div class="wettervorhersage-container fade">
-                    <div class="autocomplete-wrapper">
-                        <input type="text" id="stadt" name="stadt" class="input-wettervorhersage" placeholder="z.B. Tokyo" required autocomplete="off">
-                        <ul id="autocomplete-list" class="autocomplete-list"></ul>
-                        <button type="submit" class="button-wettervorhersage">Ok</button>
-                    </div>
+{% block specificScript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script src="{{ url_for('static', filename='js/wettervorhersage.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<div class="main-wrapper-subsites fade">
+    <main class="content">
+        <h1 class="banner-vorhersage">3-Tage-Wetter</h1>
+        <form id="wetterFormVorhersage">
+            <div class="wettervorhersage-container fade">
+                <div class="autocomplete-wrapper">
+                    <input type="text" id="stadt" name="stadt" class="input-wettervorhersage" placeholder="z.B. Tokyo" required autocomplete="off">
+                    <ul id="autocomplete-list" class="autocomplete-list"></ul>
+                    <button type="submit" class="button-wettervorhersage">Ok</button>
                 </div>
-            </form>
-            <div id="forecast-output" class="output fade"></div>
-        </main>
-    </div>
-</body>
-</html>
+            </div>
+        </form>
+        <div id="forecast-output" class="output fade"></div>
+    </main>
+</div>
+{% endblock %}

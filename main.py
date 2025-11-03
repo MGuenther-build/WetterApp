@@ -16,29 +16,13 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template ("index.html")
+    return render_template("home.html", active_page="home")
 
 
 
-@app.route("/Wetterarchiv")
-def wetterarchiv():
-    try:
-        stationenpfad = get_stations()
-        stationen = pandas.read_csv(stationenpfad, skiprows=17)
-        stationen.columns = stationen.columns.str.strip()
-        stationen = stationen[["STAID", "STANAME"]]
-        stationen["STANAME"] = stationen["STANAME"].str.strip().str.upper()
-        stationen = stationen.sort_values("STANAME")
-        stationen["STANAME_CLEAN"] = stationen["STANAME"].str.strip().str.upper()
-        stationen_liste = stationen[["STAID", "STANAME", "STANAME_CLEAN"]].to_dict(orient="records")
-        stationen_html = stationen.to_html(index=False)                         # Index=False, weil sonst Pandas Dataframe links eine ID-Spalte setzt
-        jahre = list(range(1860,2022))
-        return render_template ("wetterarchiv.html",
-                                tabelle=stationen_html,
-                                stationen=stationen_liste,
-                                jahre=jahre)
-    except Exception as e:
-        return render_template("wetterarchiv.html", fehler=str(e))
+@app.route("/Impressum")
+def impressum():
+    return render_template ("impressum.html", active_page="impressum")
 
 
 
@@ -65,8 +49,6 @@ def temperatur(station, date):
             "date": datum_mod,
             "temperature": temperatur}
 
-
-
 # Wetterarchiv - Backend-Routine für Wetterstation
 @app.route("/api/v1/<station>")
 def alle_daten_einer_station(station):
@@ -78,8 +60,6 @@ def alle_daten_einer_station(station):
         return jsonify({"Error": str(e)}), 404
     except Exception as e:
         return jsonify({"Error": f"Fehler beim Lesen der Datei"}), 500
-
-
 
 # Wetterarchiv - Backend-Routine für Jahr/Jahrescharts
 @app.route("/api/v1/yearinput/<stationId>/<year>")
@@ -95,10 +75,23 @@ def jahreschart(stationId, year):
     except Exception as e:
         return jsonify({"Error": f"Fehler beim Erstellen der Charts"}), 500
 
-
-
-# GEOCODE API
-geocode(app)
+@app.route("/Wetterarchiv")
+def wetterarchiv():
+    try:
+        stationenpfad = get_stations()
+        stationen = pandas.read_csv(stationenpfad, skiprows=17)
+        stationen.columns = stationen.columns.str.strip()
+        stationen = stationen[["STAID", "STANAME"]]
+        stationen["STANAME"] = stationen["STANAME"].str.strip().str.upper()
+        stationen = stationen.sort_values("STANAME")
+        stationen["STANAME_CLEAN"] = stationen["STANAME"].str.strip().str.upper()
+        stationen_liste = stationen[["STAID", "STANAME", "STANAME_CLEAN"]].to_dict(orient="records")
+        stationen_html = stationen.to_html(index=False)                         # Index=False, weil sonst Pandas Dataframe links eine ID-Spalte setzt
+        jahre = list(range(1860,2022))
+        return render_template ("wetterarchiv.html", tabelle=stationen_html, stationen=stationen_liste, jahre=jahre, active_page="wetterarchiv")
+    
+    except Exception as e:
+        return render_template("wetterarchiv.html", fehler=str(e))
 
 
 
@@ -117,7 +110,8 @@ def vorhersage(stadt):
     except Exception as e:
         return jsonify({"error": str(e)})
 
-
+# GEOCODE API
+geocode(app)
 
 # Wettervorhersage
 @app.route("/3-Tage-Wetter", methods=["GET", "POST"])
@@ -136,16 +130,10 @@ def wettervorhersage_3_Tage():
         except Exception as e:
             return render_template("wettervorhersage.html", fehler=str(e))
 
-    return render_template("wettervorhersage.html")
-
-
-
-@app.route("/Impressum")
-def impressum():
-    return render_template ("impressum.html")
+    return render_template("wettervorhersage.html", active_page="vorhersage")
 
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    #app.run(host='0.0.0.0', port=5000, debug=True)
+    #app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

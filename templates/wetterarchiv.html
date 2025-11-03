@@ -1,75 +1,59 @@
-<!DOCTYPE html>
-<html lang="de">
+{% extends "layouts/index.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wetterarchiv Europa</title>
-    <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
-    <link rel="preload" href="{{ url_for('static', filename='Wallpaper.webp') }}" as="image">
-    <link rel="preload" href="{{ url_for('static', filename='styles.css') }}" as="style">
-    <link rel="prefetch" href="{{ url_for('home') }}">
-    <link rel="prefetch" href="{{ url_for('wettervorhersage_3_Tage') }}">
-    <link rel="prefetch" href="{{ url_for('impressum') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/wetterarchiv.js') }}" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+{% block title %}WetterApp - Wetterarchiv{% endblock %}
 
-<body>
-    <div id="errorMessage" class="error-message"></div>
-    <nav class="topbar">
-        <div class="menu-toggle" id="mobile-menu">☰</div>
-        <ul>
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('wettervorhersage_3_Tage')}}">Vorhersage</a></li>
-            <li><a href="{{ url_for('impressum') }}">Impressum</a></li>
-        </ul>
-    </nav>
-    <div class="main-wrapper-subsites fade">
-        <main class="content">
-            <h1 class="banner-archiv">Wetterarchiv</h1>
-            <form id="wetterForm">
-                <div class="form-group">
-                    <p class="abfrage-label">Abfrage starten</p>
-                    <br>
-                   <label for="stationInput">📍 Wetterstation:</label>
-                    <input type="text" id="stationInput" list="stationenList" placeholder="Ort eingeben oder wählen …" required>
-                    <datalist id="stationenList">
-                    {% for station in stationen %}
-                        <option value="{{station.STANAME}}" data-staid="{{station.STAID}}"></option>
-                    {% endfor %}
-                    </datalist>
-                </div>
+{% block topbar %}
+    {% include "layouts/topbar.html" %}
+{% endblock %}
 
-                <div class="form-group">
-                    <label for="date">📅 Datum:</label>
-                    <input type="text" id="date" name="date" placeholder="z.B. 25.10.1988">
-                </div>
-                <button type="submit">🌡️ Temperatur abrufen</button>
-            </form>
-            <div id="result"></div>
-            <div id="chartWrapper">
-                <div id="chartContainer">
-                    <h2>Höchsttemperatur</h2>
-                    <div id="chartInfo"></div>
-                    <h2>📈 Jahresverlauf</h2>
-                    <canvas id="chart"></canvas>
-                </div>
+{% block specificScript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<script src="{{ url_for('static', filename='js/wetterarchiv.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+<div class="main-wrapper-subsites fade">
+    <main class="content">
+        <h1 class="banner-archiv">Wetterarchiv</h1>
+        <form id="wetterForm">
+            <div class="form-group">
+                <p class="abfrage-label">Abfrage starten</p>
+                <br>
+               <label for="stationInput">📍 Wetterstation:</label>
+                <input type="text" id="stationInput" list="stationenList" placeholder="Ort eingeben oder wählen …" required>
+                <datalist id="stationenList">
+                {% for station in stationen %}
+                    <option value="{{station.STANAME}}" data-staid="{{station.STAID}}"></option>
+                {% endfor %}
+                </datalist>
             </div>
 
-            <div class="info-wrapper">
-                <p class="wetterarchiv-info">Bitte bedenken Sie, dass es sich hier um eine Sammlung aller europäischen Wetterstationen handelt, die seit 1860 bis 2022 
-                    Messungen vornahmen. Einige von ihnen sind schon lange nicht mehr in Betrieb, andere waren nur wenige Jahre in Betrieb oder immer mal wieder 
-                    (doppelte Einträge!).
-                </p>
+            <div class="form-group">
+                <label for="date">📅 Datum:</label>
+                <input type="text" id="date" name="date" placeholder="z.B. 25.10.1988">
             </div>
-        </main>
-    </div>
+            <button type="submit">🌡️ Temperatur abrufen</button>
+        </form>
+        <div id="result"></div>
+        <div id="chartWrapper">
+            <div id="chartContainer">
+                <h2>Höchsttemperatur</h2>
+                <div id="chartInfo"></div>
+                <h2>📈 Jahresverlauf</h2>
+                <canvas id="chart"></canvas>
+            </div>
+        </div>
+
+        <div class="info-wrapper">
+            <p class="wetterarchiv-info">Bitte bedenken Sie, dass es sich hier um eine Sammlung aller europäischen Wetterstationen handelt, die seit 1860 bis 2022 
+                Messungen vornahmen. Einige von ihnen sind schon lange nicht mehr in Betrieb, andere waren nur wenige Jahre in Betrieb oder immer mal wieder 
+                (doppelte Einträge!).
+            </p>
+        </div>
+    </main>
+</div>
 {% if fehler %}
     <p>Fehler: {{ fehler }}</p>
 {% endif %}
 <script id="stationen-data" type="application/json">{{ stationen | tojson }}</script>
-</body>
-</html>
+{% endblock %}

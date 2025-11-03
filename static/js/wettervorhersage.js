@@ -1,6 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('wetterFormVorhersage');
+        if (!form) return;
     const output = document.getElementById('forecast-output');
     const input = document.getElementById("stadt");
     const wrapper = document.querySelector(".autocomplete-wrapper");
@@ -171,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (forecastSection) forecastSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         } catch (err) {
-            output.innerHTML = '<p>Fehler beim Laden der Daten</p>';
+            alert(`❌ Fehler beim Laden der Wetterdaten:\n${err.message}`);
         }
     });
   

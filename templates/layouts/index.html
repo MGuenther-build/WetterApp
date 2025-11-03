@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}WetterApp{% endblock %}</title>
+  <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+  {% block specificScript %}{% endblock %}
+</head>
+<body>
+    {% block topbar %}{% endblock %}
+    {% block content %}{% endblock %}
+    {% extends "layouts/footer.html" %}
+</body>
+</html>
