@@ -27,11 +27,6 @@ body {
   display: flex;
   min-height: 100vh;
   margin: 0;
-  background-image: url('../static/Wallpaper.webp');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: 100% 100%;
-  background-attachment: fixed;
   font-family: "Winky Rough";
   box-sizing: border-box;
   flex-direction: column;
@@ -67,12 +62,12 @@ body {
   color: rgba(248, 248, 248, 0.9);
   text-shadow: 0.25rem 0.25rem 0.5rem rgba(7, 38, 86, 0.9);
   font-size: 6.5rem;
-  margin-top: 6.5vh;
+  margin-top: 0.1rem;
   margin-bottom: 6.5vh;
 }
 @media (max-width: 768px) {
   .banner {
-    margin-top: 5vh;
+    margin-top: 0.1rem;
     font-size: clamp(3.5rem, 6vw, 5rem);
     width: 100%;
     object-fit: contain;
@@ -397,6 +392,12 @@ canvas#chart {
   box-shadow: 0.2rem 0.75rem 0.75rem rgba(255, 255, 255, 0.2);
   border-radius: 1rem;
   z-index: 9999;
+}
+
+#topbar.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 
 .menu-toggle {

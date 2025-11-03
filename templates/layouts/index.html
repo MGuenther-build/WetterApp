@@ -10,8 +10,10 @@
   {% block specificScript %}{% endblock %}
 </head>
 <body>
-    {% block topbar %}{% endblock %}
+    <div id="topbar" class="{% if no_topbar %}hidden{% endif %}">
+      {% include "layouts/topbar.html" %}
+    </div>
     {% block content %}{% endblock %}
-    {% extends "layouts/footer.html" %}
+    {% include "layouts/footer.html" %}
 </body>
 </html>

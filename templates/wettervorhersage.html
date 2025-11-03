@@ -2,10 +2,6 @@
 
 {% block title %}WetterApp - Wettervorhersage{% endblock %}
 
-{% block topbar %}
-    {% include "layouts/topbar.html" %}
-{% endblock %}
-
 {% block specificScript %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script src="{{ url_for('static', filename='js/wettervorhersage.js') }}" defer></script>
