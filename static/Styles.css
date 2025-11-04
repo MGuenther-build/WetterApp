@@ -62,12 +62,11 @@ body {
   color: rgba(248, 248, 248, 0.9);
   text-shadow: 0.25rem 0.25rem 0.5rem rgba(7, 38, 86, 0.9);
   font-size: 6.5rem;
-  margin-top: 0.1rem;
-  margin-bottom: 6.5vh;
+  margin: 4rem 0;
 }
 @media (max-width: 768px) {
   .banner {
-    margin-top: 0.1rem;
+    margin: 2rem 0;
     font-size: clamp(3.5rem, 6vw, 5rem);
     width: 100%;
     object-fit: contain;
@@ -174,6 +173,8 @@ body {
 }
 @media (max-width: 768px) {
   .card {
+    width: 80vw;
+    height: auto;
     background: linear-gradient(
       135deg,
       rgba(236, 240, 243, 0.5),
@@ -395,9 +396,7 @@ canvas#chart {
 }
 
 #topbar.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
+  display: none;
 }
 
 .menu-toggle {
