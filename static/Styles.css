@@ -1,6 +1,6 @@
 
 html {
-  background-color: #f3f3f3;
+  background-color: #083574;
   height: 100%;
   width: 100%;
   scrollbar-gutter: stable;
@@ -27,6 +27,11 @@ body {
   display: flex;
   min-height: 100vh;
   margin: 0;
+  background-image: url('../static/Wallpaper.webp');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100% 100%;
+  background-attachment: fixed;
   font-family: "Winky Rough";
   box-sizing: border-box;
   flex-direction: column;
