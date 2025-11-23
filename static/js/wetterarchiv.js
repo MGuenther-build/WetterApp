@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const stationInput = stationInputRaw.trim().toUpperCase();
         const matchedStation = stationenListe.find(s => s.STANAME_CLEAN === stationInput);
         if (!matchedStation) {
-            alert("❌ Kein Ort mit diesem Namen gefunden!");
+            alert("⚠️ Kein Ort mit diesem Namen gefunden!");
             return;
         }
         const stationId = matchedStation.STAID;
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const dateInput = document.getElementById("date").value;
         const parts = dateInput.split(".");
         if (parts.length !== 3) {
-            alert("❌ Ungültiges Datum. Bitte im Format TT.MM.JJJJ eingeben.");
+            alert("⚠️ Ungültiges Datum. Bitte im Format TT.MM.JJJJ eingeben.");
             return;
         }
 

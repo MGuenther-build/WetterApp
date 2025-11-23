@@ -76,62 +76,68 @@ function initPage() {
 function handleNavigation(e, targetUrl) {
   if (!targetUrl || !targetUrl.startsWith(location.origin)) 
     return;
-
   e.preventDefault();
 
   const elementsToFade = [
     document.querySelector('.main-wrapper'),
-    document.querySelector('.kacheln'),
     document.querySelector('.main-wrapper-subsites'),
     document.querySelector('.main-wrapper-impressum')
   ].filter(Boolean);
 
+  const loadPromise = fetch(targetUrl)
+    .then(res => res.text())
+    .catch(() => window.location.href = targetUrl);
+
   fadeTransition({
     elements: elementsToFade,
-    onComplete: () => {
-      history.pushState(null, '', targetUrl);
-      loadPage(targetUrl);
+    onComplete: async () => {
+      const html = await loadPromise;
+      applyNewPage(html, targetUrl);
+
+      elementsToFade.forEach(el => {
+        el.classList.remove('fade-out');
+        void el.offsetWidth;
+        el.classList.add('fade');
+      });
     }
   });
 }
 
 
 
-async function loadPage(url) {
-  try {
-    const response = await fetch(url);
-    const html = await response.text();
-
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-
-    const newMain = doc.querySelector('.main-wrapper');
-    const newSubsite = doc.querySelector('.main-wrapper-subsites');
-    const newImpressum = doc.querySelector('.main-wrapper-impressum');
-
-    const containerMain = document.querySelector('.main-wrapper');
-    const containerSubsite = document.querySelector('.main-wrapper-subsites');
-    const containerImpressum = document.querySelector('.main-wrapper-impressum');
-
-    if (newMain && containerMain) {
-      containerMain.innerHTML = newMain.innerHTML;
-    }
-    if (newSubsite && containerSubsite) {
-      containerSubsite.innerHTML = newSubsite.innerHTML;
-    }
-    if (newImpressum && containerImpressum) {
-      containerImpressum.innerHTML = newImpressum.innerHTML;
-    } else {
-      window.location.href = url;
-      return;
-    }
-
-    initPage();
-    updateActiveLink(url);
-
-  } catch (err) {
+function applyNewPage(html, url) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  const wrappers = [
+    '.main-wrapper',
+    '.main-wrapper-subsites',
+    '.main-wrapper-impressum'
+  ];
+  let newWrapperSel = wrappers.find(sel => doc.querySelector(sel));
+  if (!newWrapperSel) {
     window.location.href = url;
+    return;
   }
+
+  let oldWrapperSel = wrappers.find(sel => document.querySelector(sel));
+  if (oldWrapperSel && oldWrapperSel !== newWrapperSel) {
+    const oldEl = document.querySelector(oldWrapperSel);
+    oldEl.innerHTML = "";
+  }
+
+  const newWrapper = doc.querySelector(newWrapperSel);
+  const oldWrapper = document.querySelector(newWrapperSel);
+  if (oldWrapper && newWrapper) {
+    oldWrapper.innerHTML = newWrapper.innerHTML;
+  } else {
+    window.location.href = url;
+    return;
+  }
+
+  history.pushState(null, '', url);
+
+  initPage();
+  updateActiveLink(url);
 }
 
 
