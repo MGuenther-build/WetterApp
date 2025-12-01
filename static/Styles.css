@@ -1,6 +1,6 @@
 
 html {
-  background-color: #083574;
+  background-color: black;
   height: 100%;
   width: 100%;
   scrollbar-gutter: stable;
@@ -59,8 +59,14 @@ body {
 
 .main-wrapper {
   flex: 1;
+  bottom: 7vh;
   box-sizing: border-box;
   text-align: center;
+}
+@media (max-width: 768px) {
+  .main-wrapper {
+    bottom: 5vh;
+  }
 }
 .main-wrapper-subsites {
   flex: 1;
@@ -193,14 +199,13 @@ body {
 .card-link {
   text-decoration: none;
   display: block;
-  color: #1c64ab;
-  text-shadow: 0 0.1rem rgba(229, 240, 248, 0.5);
+  color: #0e4882;
+  text-shadow: 0 0.05rem rgba(229, 240, 248);
   text-decoration: none;
   font-weight: bold;
 }
 .card-link:hover {
-  color: #1c64ab;
-  text-shadow: 0 0.1rem rgba(255, 255, 255, 0.5);
+  color: #1666b5;
 }
 .card:hover {
   box-shadow: 0.25rem 0.75rem 1.5rem 0.5rem rgba(255, 255, 255, 0.6);
@@ -396,8 +401,12 @@ canvas#chart {
   z-index: 9999;
 }
 
+#topbar {
+  transition: opacity 0.5s ease;
+}
 #topbar.hidden {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .menu-toggle {
