@@ -14,11 +14,14 @@ function fadeTransition({ elements, fadeOutClass = 'fade-out', fadeInClass = 'fa
     void el.offsetWidth;
     el.classList.add(fadeOutClass);
   });
+  
   const primary = elements[0];
   if (primary) {
-    const onEnd = () => onComplete?.();
-    primary.addEventListener('animationend', onEnd, { once: true });
-    primary.addEventListener('transitionend', onEnd, { once: true });
+    requestAnimationFrame(() => {
+      const onEnd = () => onComplete?.();
+      primary.addEventListener('animationend', onEnd, { once: true });
+      primary.addEventListener('transitionend', onEnd, { once: true });
+    });
   }
 }
 
