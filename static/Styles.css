@@ -1,6 +1,6 @@
 
 html {
-  background: rgba(0, 80, 130);
+  background: black;
   height: 100%;
   width: 100%;
   scrollbar-gutter: stable;
@@ -24,8 +24,10 @@ html {
 }
 
 body {
+  background: rgba(0, 80, 130);
   display: flex;
   min-height: 100vh;
+  max-width: 100vw;
   margin: 0;
   background-image: url('../static/Wallpaper.webp');
   background-repeat: no-repeat;
@@ -57,7 +59,7 @@ body {
   }
 }
 
-.main-wrapper {
+.page-wrapper {
   flex: 1;
   margin: 0 auto;
   min-height: 80vh;
@@ -65,11 +67,15 @@ body {
   box-sizing: border-box;
   text-align: center;
 }
-.main-wrapper, #topbar {
-  will-change: transform, opacity;
-  transform: translateZ(0);
+.main-wrapper-home {
+  flex: 1;
+  margin: 0 auto;
+  min-height: 80vh;
+  max-width: 100vw;
+  box-sizing: border-box;
+  text-align: center;
 }
-.main-wrapper-subsites {
+.main-wrapper-archiv {
   flex: 1;
   margin: 0 auto;
   min-height: 80vh;
@@ -80,7 +86,23 @@ body {
   text-align: center;
 }
 @media (max-width: 768px) {
-  .main-wrapper-subsites {
+  .main-wrapper-archiv {
+    padding-top: 0.1rem;
+    margin-bottom: 1.5rem;
+  }
+}
+.main-wrapper-vorhersage {
+  flex: 1;
+  margin: 0 auto;
+  min-height: 80vh;
+  max-width: 100vw;
+  font-weight: 500;
+  padding-top: 2rem;
+  box-sizing: border-box;
+  text-align: center;
+}
+@media (max-width: 768px) {
+  .main-wrapper-vorhersage {
     padding-top: 0.1rem;
     margin-bottom: 1.5rem;
   }
@@ -382,14 +404,10 @@ canvas#chart {
   font-weight: 600;
   font-style: normal;
   height: 7vh;
-  background: linear-gradient(
-    200deg,
-    rgba(29, 76, 146, 0.0),
-    rgba(51, 101, 177, 0.1),
-    rgba(43, 89, 158, 0.0)
-  );
-  box-shadow: 0.2rem 0.75rem 0.75rem rgba(255, 255, 255, 0.2);
-  border-radius: 1rem;
+  width: 80vw;
+  margin: 0 auto;
+  box-shadow: 0rem 0.75rem 1rem rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
   z-index: 9999;
 }
 #topbar {
@@ -398,6 +416,7 @@ canvas#chart {
 }
 #topbar.hidden {
   opacity: 0;
+  pointer-events: none;
 }
 
 .menu-toggle {
@@ -406,17 +425,15 @@ canvas#chart {
 
 .topbar ul {
   display: flex;
-  gap: 0.2rem;
+  gap: 1rem;
 }
 
 .topbar li {
-  position: relative;
-  flex: 1;
+  flex: 0;
   list-style: none;
 }
 
 .topbar li::before {
-  content: "•";
   position: absolute;
   left: 0;
   top: 50%;
@@ -425,14 +442,17 @@ canvas#chart {
   font-size: 1.2rem;
 }
 
+.topbar li.active a {
+  border-bottom: 0.1rem solid #6491d5;
+  
+}
 .topbar li a {
   display: block;
   color: #f5f2f0;
   text-align: center;
   text-decoration: none;
-  width: 4rem;
   font-size: 1.1rem;
-  padding: 1rem 3.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 0.1rem;
   transition: transform 1.0s ease;
 }
@@ -440,6 +460,7 @@ canvas#chart {
 .topbar li a:hover {
   background-color: #6491d5;
   color: #ffffff;
+  border-radius: 20%;
   transition: background-color 0.9s ease;
 }
 
@@ -449,6 +470,14 @@ canvas#chart {
 }
 @media (max-width: 768px) {
   .topbar {
+     background: linear-gradient(
+      200deg,
+      rgba(29, 76, 146, 0.0),
+      rgba(51, 101, 177, 0.1),
+      rgba(43, 89, 158, 0.0)
+    );
+    box-shadow: 0.2rem 0.75rem 0.75rem rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;

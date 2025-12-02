@@ -53,7 +53,6 @@ function initBurgermenu() {
 
 function initPage() {
   decodeEmail();
-
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -63,15 +62,19 @@ function initPage() {
     });
   });
   document.querySelectorAll(".fade-trigger").forEach(el => observer.observe(el));
-
   document.querySelectorAll('a[href]').forEach(link => {
     const isExternal = !link.href.startsWith(location.origin);
     if (!isExternal) {
       link.onclick = (e) => handleNavigation(e, link.href);
     }
   });
-  
   initBurgermenu();
+  if (document.getElementById('wetterFormVorhersage')) {
+    initWettervorhersage();
+  }
+  if (document.getElementById('wetterForm')) {
+    initWetterarchiv();
+  }
 }
 
 
@@ -81,27 +84,25 @@ function handleNavigation(e, targetUrl) {
     return;
   e.preventDefault();
 
-  const elementsToFade = [
-    document.querySelector('.main-wrapper'),
-    document.querySelector('.main-wrapper-subsites'),
-    document.querySelector('.main-wrapper-impressum')
-  ].filter(Boolean);
+  const pageWrapper = document.querySelector('.page-wrapper');
+  if (!pageWrapper) {
+    window.location.href = targetUrl;
+    return;
+  }
 
   const loadPromise = fetch(targetUrl)
     .then(res => res.text())
     .catch(() => window.location.href = targetUrl);
 
   fadeTransition({
-    elements: elementsToFade,
+    elements: [pageWrapper],
     onComplete: async () => {
       const html = await loadPromise;
       applyNewPage(html, targetUrl);
 
-      elementsToFade.forEach(el => {
-        el.classList.remove('fade-out');
-        void el.offsetWidth;
-        el.classList.add('fade');
-      });
+      pageWrapper.classList.remove('fade-out');
+      void pageWrapper.offsetWidth;
+      pageWrapper.classList.add('fade');
     }
   });
 }
@@ -111,34 +112,25 @@ function handleNavigation(e, targetUrl) {
 function applyNewPage(html, url) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
-  const wrappers = [
-    '.main-wrapper',
-    '.main-wrapper-subsites',
-    '.main-wrapper-impressum'
-  ];
-  let newWrapperSel = wrappers.find(sel => doc.querySelector(sel));
-  if (!newWrapperSel) {
-    window.location.href = url;
-    return;
-  }
 
-  let oldWrapperSel = wrappers.find(sel => document.querySelector(sel));
-  if (oldWrapperSel && oldWrapperSel !== newWrapperSel) {
-    const oldEl = document.querySelector(oldWrapperSel);
-    oldEl.innerHTML = "";
-  }
+  const newWrapper = doc.querySelector('.page-wrapper');
+  const oldWrapper = document.querySelector('.page-wrapper');
 
-  const newWrapper = doc.querySelector(newWrapperSel);
-  const oldWrapper = document.querySelector(newWrapperSel);
-  if (oldWrapper && newWrapper) {
-    oldWrapper.innerHTML = newWrapper.innerHTML;
+  if (newWrapper && oldWrapper) {
+    oldWrapper.replaceWith(newWrapper);
   } else {
     window.location.href = url;
     return;
   }
 
-  history.pushState(null, '', url);
+  const newTopbar = doc.querySelector('#topbar');
+  const oldTopbar = document.querySelector('#topbar');
+  if (newTopbar && oldTopbar) {
+    oldTopbar.className = newTopbar.className;
+    oldTopbar.innerHTML = newTopbar.innerHTML;
+  }
 
+  history.pushState(null, '', url);
   initPage();
   updateActiveLink(url);
 }
@@ -168,8 +160,4 @@ function updateActiveLink(currentUrl) {
 window.addEventListener('popstate', () => {
   loadPage(location.href);
 });
-
-
-
-// Initialisierung //
 window.addEventListener('DOMContentLoaded', initPage);

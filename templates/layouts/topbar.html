@@ -1,17 +1,9 @@
 <nav class="topbar">
   <div class="menu-toggle" id="mobile-menu">☰</div>
   <ul>
-    {% if active_page != 'home' %}
-      <li><a href="{{ url_for('home') }}">Home</a></li>
-    {% endif %}
-    {% if active_page != 'wetterarchiv' %}
-      <li><a href="{{ url_for('wetterarchiv') }}">Wetterarchiv</a></li>
-    {% endif %}
-    {% if active_page != 'vorhersage' %}
-      <li><a href="{{ url_for('wettervorhersage_3_Tage') }}">Vorhersage</a></li>
-    {% endif %}
-    {% if active_page != 'impressum' %}
-      <li><a href="{{ url_for('impressum') }}">Impressum</a></li>
-    {% endif %}
+      <li class="{% if request.path == '/Home' %}active{% endif %}"><a href="{{ url_for('home') }}">Home</a></li>
+      <li class="{% if request.path == '/Wetterarchiv' %}active{% endif %}"><a href="{{ url_for('wetterarchiv') }}">Wetterarchiv</a></li>
+      <li class="{% if request.path == '/3-Tage-Wetter' %}active{% endif %}"><a href="{{ url_for('wettervorhersage_3_Tage') }}">Vorhersage</a></li>
+      <li class="{% if request.path == '/Impressum' %}active{% endif %}"><a href="{{ url_for('impressum') }}">Impressum</a></li>
   </ul>
 </nav>

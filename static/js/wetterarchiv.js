@@ -1,10 +1,14 @@
 
-document.addEventListener("DOMContentLoaded", () => {
+function initWetterarchiv() {
     const wetterForm = document.getElementById("wetterForm");
+    if (!wetterForm)
+        return;
+    if (wetterForm.dataset.initialized === "1") 
+        return;
+    wetterForm.dataset.initialized = "1";
     const chartWrapper = document.getElementById("chartContainer");
     const stationenScript = document.getElementById("stationen-data");
     const stationenListe = stationenScript ? JSON.parse(stationenScript.textContent) : [];
-
 
     wetterForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -117,4 +121,4 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("❌ Fehler bei der Abfrage!");
         }
     });
-});
+}

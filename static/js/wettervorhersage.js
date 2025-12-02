@@ -1,7 +1,8 @@
 
-document.addEventListener('DOMContentLoaded', () => {
+function initWettervorhersage() {
     const form = document.getElementById('wetterFormVorhersage');
-        if (!form) return;
+        if (!form) 
+            return;
     const output = document.getElementById('forecast-output');
     const input = document.getElementById("stadt");
     const wrapper = document.querySelector(".autocomplete-wrapper");
@@ -224,4 +225,4 @@ document.addEventListener('DOMContentLoaded', () => {
       list.innerHTML = "";
     }
   });
-});
+}
