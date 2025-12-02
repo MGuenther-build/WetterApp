@@ -8,10 +8,10 @@
   <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+  {% block specificScript %}{% endblock %}
   <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
   <script src="{{ url_for('static', filename='js/wetterarchiv.js') }}" defer></script>
   <script src="{{ url_for('static', filename='js/wettervorhersage.js') }}" defer></script>
-  {% block specificScript %}{% endblock %}
 </head>
 <body>
     <div id="topbar" class="{% if no_topbar %}hidden{% endif %}">
