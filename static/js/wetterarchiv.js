@@ -105,7 +105,7 @@ async function initWetterarchiv() {
                         legend: { display: false }
                     },
                     animation: { 
-                        duration: 1000,
+                        duration: 500,
                         easing: "linear",
                         onComplete: () => {
                             chartWrapper.classList.add("visible");
@@ -119,7 +119,9 @@ async function initWetterarchiv() {
                 }
         });
             history.replaceState(null, "", "/Wetterarchiv");
-
+            document.getElementById("scrollTopBtn").addEventListener("click", () => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
         } catch (error) {
             alert("❌ Fehler bei der Abfrage!");
         }

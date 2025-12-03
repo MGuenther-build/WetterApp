@@ -286,16 +286,12 @@ body {
 
 
 #result {
-  margin-top: 3rem;
+  margin-top: 5rem;
   font-size: 1rem;
   color: #282727;
   text-align: center;
 }
-@media (max-width: 768px) {
-  #result {
-    margin-top: 3rem;
-  }
-}
+
 
 
 #chart {
@@ -357,6 +353,18 @@ canvas#chart {
 }
 #chartWrapper.visible #chartContainer {
   display: block;
+}
+.scroll-top-btn {
+  margin: 1rem 0 0.5rem;
+  padding: 0.2rem 0.5rem;
+  background-color: #357ab8;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+.scroll-top-btn:hover {
+  background-color: #2c5aa0;
 }
 
 
