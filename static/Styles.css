@@ -974,6 +974,35 @@ form#wetterForm button:active {
 }
 
 
+.notfound-text {
+  text-align: center;
+  color: rgba(227, 226, 226);
+  font-weight: 900;
+  font-style: bold;
+  font-size: 4rem;
+  text-shadow: 0.1rem 0.1rem rgba(9, 36, 123, 0.7);
+}
+@media (max-width: 768px) {
+  .notfound-text {
+    font-size: clamp(3.5rem, 6vw, 5rem);
+    width: 100%;
+    object-fit: contain;
+  }
+}
+.homeButton404 {
+  background-color: rgba(40, 117, 195);
+  color: white;
+  font-size: 1.2rem;
+  margin: 4rem 0 0 0;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  text-decoration: none;
+}
+.homeButton404:hover {
+  background-color: rgb(18, 76, 135);
+}
+
+
 
 .homepageLink {
   padding-top: 1rem;
