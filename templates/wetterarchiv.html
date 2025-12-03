@@ -31,7 +31,7 @@
                 <div id="chartContainer">
                     <h2>Höchsttemperatur</h2>
                     <div id="chartInfo"></div>
-                    <h2>📈 Jahresverlauf</h2>
+                    <h2>📈 Jahresverlauf für <span id="yearLabel"></span></h2>
                     <canvas id="chart"></canvas>
                 </div>
             </div>
@@ -45,10 +45,4 @@
         </main>
     </div>
 </div>
-{% if fehler %}
-    <p>Fehler: {{ fehler }}</p>
-{% endif %}
-{% endblock %}
-{% block specificScript %}
-<script id="stationen-data" type="application/json">{{ stationen | tojson }}</script>
 {% endblock %}

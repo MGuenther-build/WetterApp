@@ -1,41 +1,54 @@
+let stationenListe = [];
 
-function initWetterarchiv() {
+async function initWetterarchiv() {
     const wetterForm = document.getElementById("wetterForm");
-    if (!wetterForm)
+    const chartContainer = document.getElementById("chartContainer");
+    const chartWrapper = document.getElementById("chartWrapper");
+
+    if (!wetterForm) 
         return;
-    if (wetterForm.dataset.initialized === "1") 
+    if (wetterForm.dataset.initialized === "1") {
         return;
-    wetterForm.dataset.initialized = "1";
-    const chartWrapper = document.getElementById("chartContainer");
-    const stationenScript = document.getElementById("stationen-data");
-    const stationenListe = stationenScript ? JSON.parse(stationenScript.textContent) : [];
+    }
+
+    try {
+        const response = await fetch("/api/v1/stationen");
+        stationenListe = await response.json();
+    } catch (err) {
+        return;
+    }
 
     wetterForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        document.getElementById("chartInfo").innerHTML = "";
-        
-        const stationInputRaw = document.getElementById("stationInput").value;
-        const stationInput = stationInputRaw.trim().toUpperCase();
-        const matchedStation = stationenListe.find(s => s.STANAME_CLEAN === stationInput);
+
+        const rawInput = document.getElementById("stationInput").value.trim().toUpperCase();
+        const stationInput = rawInput.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+
+        const matchedStation = stationenListe.find(s =>
+            s.STANAME_CLEAN.normalize("NFD").replace(/\p{Diacritic}/gu, "") === stationInput
+        );
+
         if (!matchedStation) {
             alert("⚠️ Kein Ort mit diesem Namen gefunden!");
             return;
         }
+
         const stationId = matchedStation.STAID;
         const stationName = matchedStation.STANAME;
+
         const dateInput = document.getElementById("date").value;
         const parts = dateInput.split(".");
         if (parts.length !== 3) {
-            alert("⚠️ Ungültiges Datum. Bitte im Format TT.MM.JJJJ eingeben.");
+            alert("⚠️ Ungültiges Datum! Format: TT.MM.JJJJ");
             return;
         }
 
         const [day, month, year] = parts;
         const dateFormatted = `${year}${month.padStart(2, "0")}${day.padStart(2, "0")}`;
-        const apiURL = `/api/v1/${stationId}/${dateFormatted}`;
+        document.getElementById("yearLabel").textContent = year;
 
         try {
-            const response = await fetch(apiURL);
+            const response = await fetch(`/api/v1/${stationId}/${dateFormatted}`);
             const data = await response.json();
 
             const temperatureDisplay =
@@ -48,7 +61,7 @@ function initWetterarchiv() {
                 <p>📅 Datum: ${data.date}</p>
                 <p>🌡️ Temperatur: ${temperatureDisplay}</p>
             `;
-            
+
             const chartResponse = await fetch(`/api/v1/yearinput/${stationId}/${year}`);
             const chartData = await chartResponse.json();
             const labels = [];
@@ -58,18 +71,15 @@ function initWetterarchiv() {
                 const dateStr = entry["    DATE"];
                 const temp = entry["   TG"];
                 if (temp > -800) {
-                    const day = dateStr.slice(6, 8);
-                    const month = dateStr.slice(4, 6);
-                    labels.push(`${day}.${month}`);
+                    labels.push(`${dateStr.slice(6, 8)}.${dateStr.slice(4, 6)}.`);
                     temps.push(temp / 10);
                 }
             });
 
-            if (window.chartInstance) {
-                window.chartInstance.destroy();
-            }
-
+            chartContainer.style.display = "block";
             const ctx = document.getElementById("chart").getContext("2d");
+            if (window.chartInstance) 
+                window.chartInstance.destroy();
             window.chartInstance = new Chart(ctx, {
                 type: "line",
                 data: {
@@ -77,8 +87,8 @@ function initWetterarchiv() {
                     datasets: [{
                         data: temps,
                         borderColor: "#2B1B04",
-                        pointRadius: 5,
-                        pointHoverRadius: 7,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
                         pointBackgroundColor: "#FF9900",
                         tension: 0.4
                     }]
@@ -89,32 +99,25 @@ function initWetterarchiv() {
                         tooltip: {
                             enabled: true,
                             callbacks: {
-                                label: (context) => `${context.parsed.y}°C am ${context.label}`
+                                label: (context) => `${context.parsed.y}°C`
                             }
                         },
                         legend: { display: false }
                     },
                     animation: { 
-                        duration: 1500,
+                        duration: 1000,
                         easing: "linear",
-                        onProgress: function(animation) {
-                            const chart = animation.chart;
-                            chart.data.datasets.forEach((dataset) => {
-                                dataset._meta = dataset._meta || {};
-                                dataset._meta.hidden = false;
-                            });
-                        },
                         onComplete: () => {
                             chartWrapper.classList.add("visible");
                             chartWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
                         } 
                     },
                     scales: {
-                        y: { title: { display: true, text: "Temperatur in Celsius" } },
+                        y: { title: { display: true, text: "Temperatur in C°" } },
                         x: { ticks: { maxTicksLimit: 12 } }
                     }
                 }
-            });
+        });
             history.replaceState(null, "", "/Wetterarchiv");
 
         } catch (error) {

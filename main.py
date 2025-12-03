@@ -26,7 +26,7 @@ def impressum():
 
 
 
-# Wetterarchiv - Backend-Routine für Temperatur pro Tag
+# Wetterarchiv
 @app.route("/api/v1/<station>/<date>")
 def temperatur(station, date):
     wetterdaten = get_wetter(station)
@@ -49,7 +49,8 @@ def temperatur(station, date):
             "date": datum_mod,
             "temperature": temperatur}
 
-# Wetterarchiv - Backend-Routine für Wetterstation
+
+
 @app.route("/api/v1/<station>")
 def alle_daten_einer_station(station):
     try:
@@ -61,7 +62,8 @@ def alle_daten_einer_station(station):
     except Exception as e:
         return jsonify({"Error": f"Fehler beim Lesen der Datei"}), 500
 
-# Wetterarchiv - Backend-Routine für Jahr/Jahrescharts
+
+
 @app.route("/api/v1/yearinput/<stationId>/<year>")
 def jahreschart(stationId, year):
     try:
@@ -74,6 +76,8 @@ def jahreschart(stationId, year):
         return jsonify({"Error": str(e)}), 404
     except Exception as e:
         return jsonify({"Error": f"Fehler beim Erstellen der Charts"}), 500
+
+
 
 @app.route("/Wetterarchiv")
 def wetterarchiv():
@@ -95,6 +99,23 @@ def wetterarchiv():
 
 
 
+@app.route("/api/v1/stationen")
+def stationen_api():
+    try:
+        stationenpfad = get_stations()
+        stationen = pandas.read_csv(stationenpfad, skiprows=17)
+        stationen.columns = stationen.columns.str.strip()
+        stationen = stationen[["STAID", "STANAME"]]
+        stationen["STANAME"] = stationen["STANAME"].str.strip().str.upper()
+        stationen = stationen.sort_values("STANAME")
+        stationen["STANAME_CLEAN"] = stationen["STANAME"].str.strip().str.upper()
+        stationen_liste = stationen[["STAID", "STANAME", "STANAME_CLEAN"]].to_dict(orient="records")
+        return jsonify(stationen_liste)
+    except Exception as e:
+        return jsonify({"Error": str(e)}), 500
+
+
+
 # Wettervorhersage
 @app.route("/vorhersage/<stadt>")
 def vorhersage(stadt):
@@ -110,10 +131,12 @@ def vorhersage(stadt):
     except Exception as e:
         return jsonify({"error": str(e)})
 
-# GEOCODE API
+
+
 geocode(app)
 
-# Wettervorhersage
+
+
 @app.route("/3-Tage-Wetter", methods=["GET", "POST"])
 def wettervorhersage_3_Tage():
     if request.method == "POST":
