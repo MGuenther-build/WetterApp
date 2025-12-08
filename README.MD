@@ -31,6 +31,9 @@
 * Geocode API: Für die Autovervollständigung in der weltweiten Wettervorhersage.
 * HTML/CSS/JavaScript: Für die moderne Kacheloptik und Interaktivität.
 
+# Responsivität
+Diese App ist auch auf Handys vollkommen nutzbar.
+
 # Lizenz
 Diese App unterliegt der MIT-Lizenz. Sie kann von Jedem herunterladen oder geklont werden und dann natürlich auch verändert/erweitert werden! Ich bin dann allerdings nicht mehr Teil solcher Projekte.
 
