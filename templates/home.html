@@ -10,14 +10,14 @@
         <main class="content">
             <h1 class="banner">WetterApp</h1>
             <div class="home-kacheln">
-                <a href="{{url_for('wetterarchiv')}}" class="card-link">
+                <a href="{{url_for('archive.wetterarchiv')}}" class="card-link">
                     <div class="card">
                         <img src="{{ url_for('static', filename='Wetterarchiv.png') }}" class="portrait" alt="Wetterarchiv">
                         <h1>Wetterarchiv</h1>
                         <p>Abfrage von historischen Temperaturen europäischer Wetterstationen von 1860 bis 2022.</p>
                     </div>
                 </a>
-                <a href="{{url_for('wettervorhersage_3_Tage')}}" class="card-link">
+                <a href="{{url_for('forecast.wettervorhersage_3_Tage')}}" class="card-link">
                     <div class="card">
                         <img src="{{ url_for('static', filename='WetterAPI.png') }}" class="portrait" alt="Wetter API">
                         <h1>Wettervorhersage</h1>

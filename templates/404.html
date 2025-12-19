@@ -2,9 +2,11 @@
 
 {% block title %}Wetterapp{% endblock %}
 
+{% set no_topbar = True %}
+
 {% block content %}
     <div class="page-wrapper fade">
       <h1 class="notfound-text">Seite nicht gefunden</h1>
-      <a href="{{ url_for('home') }}" class="homeButton404">Zur Startseite</a>
+      <a href="{{ url_for('misc.home') }}" class="homeButton404">Zur Startseite</a>
     </div>
 {% endblock %}
