@@ -1,23 +1,20 @@
 {% extends "layouts/index.html" %}
-
-{% block title %}WetterApp - Wettervorhersage{% endblock %}
-
 {% block content %}
-<div class="page-wrapper fade">
-    <div class="main-wrapper-vorhersage">
-        <main class="content">
-            <h1 class="banner-vorhersage">3-Tage-Wetter</h1>
-            <form id="wetterFormVorhersage">
-                <div class="wettervorhersage-container fade">
-                    <div class="autocomplete-wrapper">
-                        <input type="text" id="stadt" name="stadt" class="input-wettervorhersage" placeholder="z.B. Tokyo" required autocomplete="off">
-                        <ul id="autocomplete-list" class="autocomplete-list"></ul>
-                        <button type="submit" class="button-wettervorhersage">Ok</button>
+    <div class="page-wrapper fade">
+        <div class="main-wrapper-vorhersage">
+            <main class="content">
+                <h1 class="banner-vorhersage">3-Tage-Wetter</h1>
+                <form id="wetterFormVorhersage">
+                    <div class="wettervorhersage-container fade">
+                        <div class="autocomplete-wrapper">
+                            <input type="text" id="stadt" name="stadt" class="input-wettervorhersage" placeholder="z.B. Tokyo" required autocomplete="off">
+                            <ul id="autocomplete-list" class="autocomplete-list"></ul>
+                            <button type="submit" class="button-wettervorhersage">Ok</button>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <div id="forecast-output" class="output fade"></div>
-        </main>
+                </form>
+                <div id="forecast-output" class="output fade"></div>
+            </main>
+        </div>
     </div>
-</div>
 {% endblock %}

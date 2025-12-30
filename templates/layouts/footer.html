@@ -1,3 +1,7 @@
-<footer class="homepageLink">
-    <a href="https://www.mguenther-build.de" target="_blank" rel="noopener noreferrer">MGuenther-build.de</a>
-</footer>
+    <footer class="footer">
+        <ul>
+            <li><a href="https://www.mguenther-build.de" target="_blank" rel="noopener noreferrer">MGuenther-build.de</a></li>
+            <li class="{% if request.path == '/Impressum' %}active{% endif %}"><a href="{{ url_for('misc.impressum') }}">Impressum</a></li>
+            <li class="{% if request.path == '/Datenschutz' %}active{% endif %}"><a href="{{ url_for('misc.datenschutz') }}">Datenschutz</a></li>
+        </ul>
+    </footer>

@@ -130,6 +130,15 @@ function applyNewPage(html, url) {
     oldTopbar.innerHTML = newTopbar.innerHTML;
   }
 
+  const newFooter = doc.querySelector('#footer');
+  const oldFooter = document.querySelector('#footer');
+  if (newFooter && oldFooter) {
+    oldFooter.className = newFooter.className;
+    oldFooter.innerHTML = newFooter.innerHTML;
+  }
+
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
   history.pushState(null, '', url);
   initPage();
   updateActiveLink(url);

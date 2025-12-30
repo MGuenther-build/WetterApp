@@ -16,3 +16,9 @@ def home():
 @miscRoutes.route("/Impressum")
 def impressum():
     return render_template ("impressum.html", active_page="impressum")
+
+
+
+@miscRoutes.route("/Dateschutz")
+def datenschutz():
+    return render_template ("datenschutz.html", active_page="datenschutz")

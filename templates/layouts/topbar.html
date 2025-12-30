@@ -1,9 +1,8 @@
-<nav class="topbar">
-  <div class="menu-toggle" id="mobile-menu">☰</div>
-  <ul>
-      <li class="{% if request.path == '/Home' %}active{% endif %}"><a href="{{ url_for('misc.home') }}">Home</a></li>
-      <li class="{% if request.path == '/Wetterarchiv' %}active{% endif %}"><a href="{{ url_for('archive.wetterarchiv') }}">Wetterarchiv</a></li>
-      <li class="{% if request.path == '/3-Tage-Wetter' %}active{% endif %}"><a href="{{ url_for('forecast.wettervorhersage_3_Tage') }}">Vorhersage</a></li>
-      <li class="{% if request.path == '/Impressum' %}active{% endif %}"><a href="{{ url_for('misc.impressum') }}">Impressum</a></li>
-  </ul>
-</nav>
+    <nav class="topbar">
+      <div class="menu-toggle" id="mobile-menu">☰</div>
+      <ul>
+          <li class="{% if request.path == '/Home' %}active{% endif %}"><a href="{{ url_for('misc.home') }}">Home</a></li>
+          <li class="{% if request.path == '/Wetterarchiv' %}active{% endif %}"><a href="{{ url_for('archive.wetterarchiv') }}">Wetterarchiv</a></li>
+          <li class="{% if request.path == '/3-Tage-Wetter' %}active{% endif %}"><a href="{{ url_for('forecast.wettervorhersage_3_Tage') }}">Vorhersage</a></li>
+      </ul>
+    </nav>

@@ -1,49 +1,46 @@
 {% extends "layouts/index.html" %}
-
-{% block title %}WetterApp - Wetterarchiv{% endblock %}
-
 {% block content %}
-<div class="page-wrapper fade">
-    <div class="main-wrapper-archiv">
-        <main class="content">
-            <h1 class="banner-archiv">Wetterarchiv</h1>
-            <form id="wetterForm">
-                <div class="form-group">
-                    <p class="abfrage-label">Abfrage starten</p>
-                    <br>
-                <label for="stationInput">📍 Wetterstation:</label>
-                    <input type="text" id="stationInput" list="stationenList" placeholder="Ort eingeben oder wählen …" required>
-                    <datalist id="stationenList">
-                    {% for station in stationen %}
-                        <option value="{{station.STANAME}}" data-staid="{{station.STAID}}"></option>
-                    {% endfor %}
-                    </datalist>
+    <div class="page-wrapper fade">
+        <div class="main-wrapper-archiv">
+            <main class="content">
+                <h1 class="banner-archiv">Wetterarchiv</h1>
+                <form id="wetterForm">
+                    <div class="form-group">
+                        <p class="abfrage-label">Abfrage starten</p>
+                        <br>
+                    <label for="stationInput">📍 Wetterstation:</label>
+                        <input type="text" id="stationInput" list="stationenList" placeholder="Ort eingeben oder wählen …" required>
+                        <datalist id="stationenList">
+                        {% for station in stationen %}
+                            <option value="{{station.STANAME}}" data-staid="{{station.STAID}}"></option>
+                        {% endfor %}
+                        </datalist>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">📅 Datum:</label>
+                        <input type="text" id="date" name="date" placeholder="z.B. 25.10.1988">
+                    </div>
+                    <button type="submit">🌡️ Temperatur abrufen</button>
+                </form>
+                <div id="result"></div>
+                <div id="chartWrapper">
+                    <div id="chartContainer">
+                        <h2>Höchsttemperatur</h2>
+                        <div id="chartInfo"></div>
+                        <h2>📈 Jahresverlauf für <span id="yearLabel"></span></h2>
+                        <canvas id="chart"></canvas>
+                        <button id="scrollTopBtn" class="scroll-top-btn">↑ nach oben ↑</button>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="date">📅 Datum:</label>
-                    <input type="text" id="date" name="date" placeholder="z.B. 25.10.1988">
+                <div class="info-wrapper">
+                    <p class="wetterarchiv-info">Bitte bedenken Sie, dass es sich hier um eine Sammlung aller europäischen Wetterstationen handelt, die seit 1860 bis 2022 
+                        Messungen vornahmen. Einige von ihnen sind schon lange nicht mehr in Betrieb, andere waren nur wenige Jahre in Betrieb oder immer mal wieder 
+                        (doppelte Einträge!).
+                    </p>
                 </div>
-                <button type="submit">🌡️ Temperatur abrufen</button>
-            </form>
-            <div id="result"></div>
-            <div id="chartWrapper">
-                <div id="chartContainer">
-                    <h2>Höchsttemperatur</h2>
-                    <div id="chartInfo"></div>
-                    <h2>📈 Jahresverlauf für <span id="yearLabel"></span></h2>
-                    <canvas id="chart"></canvas>
-                    <button id="scrollTopBtn" class="scroll-top-btn">↑ nach oben ↑</button>
-                </div>
-            </div>
-
-            <div class="info-wrapper">
-                <p class="wetterarchiv-info">Bitte bedenken Sie, dass es sich hier um eine Sammlung aller europäischen Wetterstationen handelt, die seit 1860 bis 2022 
-                    Messungen vornahmen. Einige von ihnen sind schon lange nicht mehr in Betrieb, andere waren nur wenige Jahre in Betrieb oder immer mal wieder 
-                    (doppelte Einträge!).
-                </p>
-            </div>
-        </main>
+            </main>
+        </div>
     </div>
-</div>
 {% endblock %}

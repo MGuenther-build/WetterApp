@@ -4,9 +4,25 @@
   <title>{% block title %}WetterApp{% endblock %}</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="WetterApp von Martin Günther. Historische Wetterdaten und aktuelle Wettervorhersagen.">
   <link rel="preload" href="{{ url_for('static', filename='styles.css') }}" as="style">
   <link rel="icon" href="{{ url_for('static', filename='Favicon_Wetter.png') }}" type="image/png">
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Martin Günther",
+      "jobTitle": "Softwareentwickler",
+      "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Berlin",
+          "addressCountry": "DE"
+      },
+      "url": "https://wetterapp.mguenther-build.de",
+      "sameAs": [ "https://github.com/MGuenther-build" ]
+    }
+  </script>
   <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
   {% block specificScript %}{% endblock %}
   <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
@@ -14,10 +30,11 @@
   <script src="{{ url_for('static', filename='js/wettervorhersage.js') }}" defer></script>
 </head>
 <body>
-    <div id="topbar" class="{% if no_topbar %}hidden{% endif %}">
-      {% include "layouts/topbar.html" %}
-    </div>
-    {% block content %}{% endblock %}
-    {% include "layouts/footer.html" %}
+  <div id="topbar" class="{% if no_topbar %}hidden{% endif %}">
+{% include "layouts/topbar.html" %}
+  </div>
+  {% block content %}{% endblock %}
+  <div id="footer" class="{% if no_footer %}hidden{% endif %}">
+{% include "layouts/footer.html" %}
 </body>
 </html>
