@@ -19,6 +19,6 @@ def impressum():
 
 
 
-@miscRoutes.route("/Dateschutz")
+@miscRoutes.route("/Datenschutz")
 def datenschutz():
     return render_template ("datenschutz.html", active_page="datenschutz")
