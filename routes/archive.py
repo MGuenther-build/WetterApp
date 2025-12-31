@@ -63,7 +63,7 @@ def jahreschart(stationId, year):
 
 
 
-@archiveRoutes.route("/Wetterarchiv")
+@archiveRoutes.route("/wetterarchiv")
 def wetterarchiv():
     try:
         stationenpfad = get_stations()

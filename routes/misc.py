@@ -13,12 +13,12 @@ def home():
 
 
 
-@miscRoutes.route("/Impressum")
+@miscRoutes.route("/impressum")
 def impressum():
     return render_template ("impressum.html", active_page="impressum")
 
 
 
-@miscRoutes.route("/Datenschutz")
+@miscRoutes.route("/datenschutz")
 def datenschutz():
     return render_template ("datenschutz.html", active_page="datenschutz")
