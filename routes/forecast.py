@@ -27,7 +27,7 @@ def vorhersage(stadt):
 
 
 
-@forecastRoutes.route("/3-Tage-Wetter", methods=["GET", "POST"])
+@forecastRoutes.route("/wettervorhersage", methods=["GET", "POST"])
 def wettervorhersage_3_Tage():
     if request.method == "POST":
         stadt = request.form.get("stadt")
