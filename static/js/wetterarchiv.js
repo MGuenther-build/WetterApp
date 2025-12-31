@@ -106,18 +106,19 @@ async function initWetterarchiv() {
                     },
                     animation: { 
                         duration: 500,
-                        easing: "linear",
-                        onComplete: () => {
-                            chartWrapper.classList.add("visible");
-                            chartWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
-                        } 
+                        easing: "linear"
                     },
                     scales: {
                         y: { title: { display: true, text: "Temperatur in C°" } },
                         x: { ticks: { maxTicksLimit: 12 } }
                     }
                 }
-        });
+            });
+            chartWrapper.classList.add("visible");
+            setTimeout(() => {
+                chartWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 50);
+
             history.replaceState(null, "", "/Wetterarchiv");
             document.getElementById("scrollTopBtn").addEventListener("click", () => {
                 window.scrollTo({ top: 0, behavior: "smooth" });
