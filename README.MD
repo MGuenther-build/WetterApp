@@ -2,6 +2,8 @@
 
 **WetterApp** ist eine moderne Python-Flask-Anwendung inkl. Pandas zur Anzeige historischer Wetterdaten und weltweiter 3-Tage-Wettervorhersagen. Die App kombiniert eine transparente Kacheloptik mit interaktiven Diagrammen und nutzt die OpenWeatherMap-API sowie Charts.js für eine visuell ansprechende Darstellung.
 
+![Screenshot der Startseite](https://www.mguenther-build.de/static/projects/WApp1.webp)
+
 ## Features
 - **Wetterarchiv Europa (1860–2022)**: Zugriff auf Tageshöchsttemperaturen aller verfügbaren Wetterstationen in Europa. Die Daten reichen je nach Station bis ins 19. Jahrhundert zurück.
 - **Interaktive Jahrescharts**: Darstellung der historischen Temperaturen in einem Jahresdiagramm. Beim Überfahren eines Tages mit der Maus erscheint ein Popup mit Datum und Temperatur.
