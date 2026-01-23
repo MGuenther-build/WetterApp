@@ -19,7 +19,6 @@ html {
     min-height: calc(100% + 10%);
     overflow: auto;
     background: transparent;
-    background-attachment: scroll !important;
   }
 }
 
@@ -44,17 +43,18 @@ body {
     z-index: 1;
     background: none;
     overflow: hidden;
+    background-attachment: scroll;
   }
   body::before {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100vw;
     height: 100vh;
     background-image: url('../static/Mobile_Wallpaper.webp');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     z-index: -1;
   }
 }
