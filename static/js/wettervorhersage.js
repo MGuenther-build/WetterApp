@@ -11,7 +11,11 @@ function initWettervorhersage() {
     list.className = "autocomplete-list";
     wrapper.appendChild(list);
     if (window.location.search.includes("stadt=")) {
-        window.history.replaceState(null, '', '/3-Tage-Wetter');
+        const params = new URLSearchParams(window.location.search);
+        const stadt = params.get("stadt");
+        if (stadt) {
+            loadForecast(stadt);
+        }
     }
 
     form.addEventListener('submit', async (e) => {
@@ -90,7 +94,7 @@ function initWettervorhersage() {
             html += '</div>';
             output.innerHTML = html;
 
-            const newUrl = `/3-Tage-Wetter?stadt=${encodeURIComponent(stadt)}`;
+            const newUrl = `/wettervorhersage?stadt=${encodeURIComponent(stadt)}`;
             window.history.replaceState(null, '', newUrl);
             window.charts = window.charts || {};
             Object.keys(tage).forEach(tag => {

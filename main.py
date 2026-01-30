@@ -14,8 +14,14 @@ def weatherApp():
     @app.before_request
     def lowercase_redirect():
         path = request.path
-        if path != path.lower() and not path.startswith('/static'):
-            return redirect(path.lower(), code=301)
+        if path.startswith("/static"):
+            return
+        if path == path.lower():
+            return
+        lowercase_path = path.lower()
+        valid_routes = {rule.rule for rule in app.url_map.iter_rules()}
+        if lowercase_path in valid_routes:
+            return redirect(lowercase_path, code=301)
     app.register_blueprint(archiveRoutes)
     app.register_blueprint(forecastRoutes)
     app.register_blueprint(miscRoutes)
