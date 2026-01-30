@@ -14,18 +14,13 @@ function initWettervorhersage() {
         const params = new URLSearchParams(window.location.search);
         const stadt = params.get("stadt");
         if (stadt) {
-            loadForecast(stadt);
+            ladeVorhersage(stadt);
         }
     }
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
+    async function ladeVorhersage(stadt) {
         list.innerHTML = "";
-
-        const stadt = document.getElementById('stadt').value.trim();
-        if (!stadt) 
-            return;
+        output.innerHTML = "";
 
         try {
             const response = await fetch(`/vorhersage/${stadt}`);
@@ -35,8 +30,8 @@ function initWettervorhersage() {
                 output.innerHTML = `<h2>${daten.error}</h2>`;
                 return;
             }
+
             const tage = {};
-            const timezone_offset = daten.timezone;
             daten.list.forEach(e => {
                 const tag = e.drei_tage;
                 if (!tage[tag]) tage[tag] = [];
@@ -96,6 +91,7 @@ function initWettervorhersage() {
 
             const newUrl = `/wettervorhersage?stadt=${encodeURIComponent(stadt)}`;
             window.history.replaceState(null, '', newUrl);
+            
             window.charts = window.charts || {};
             Object.keys(tage).forEach(tag => {
                 const canvasId = `tempChart-${tag}`;
@@ -177,56 +173,68 @@ function initWettervorhersage() {
             if (forecastSection) forecastSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         } catch (err) {
-            alert(`❌ Fehler beim Laden der Wetterdaten:\n${err.message}`);
+            alert(`Fehler beim Laden der Wetterdaten:\n${err.message}`);
+        }
+    }
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const stadt = input.value.trim();
+        if (stadt) ladeVorhersage(stadt);
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const stadtReload = params.get("stadt");
+    if (stadtReload) {
+        input.value = stadtReload;
+        ladeVorhersage(stadtReload);
+    }
+    
+    form.addEventListener("submit", () => {
+        list.innerHTML = "";
+        list.style.display = "none";
+    });
+    
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            list.innerHTML = "";
+            list.style.display = "none";
         }
     });
-  
-  form.addEventListener("submit", () => {
-    list.innerHTML = "";
-    list.style.display = "none";
-  });
-  
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      list.innerHTML = "";
-      list.style.display = "none";
-    }
-  });
+    
+    let timeout = null;
+    input.addEventListener("input", () => {
+        clearTimeout(timeout);
+        const query = input.value.trim();
+        if (query.length < 2) {
+            list.innerHTML = "";
+            list.style.display = "none";
+            return;
+        }
+        list.style.display = "block";
 
-  let timeout = null;
-  input.addEventListener("input", () => {
-    clearTimeout(timeout);
-    const query = input.value.trim();
-    if (query.length < 2) {
-      list.innerHTML = "";
-      list.style.display = "none";
-      return;
-    }
-
-    list.style.display = "block";
-
-    timeout = setTimeout(() => {
-      fetch(`/api/geocode?q=${encodeURIComponent(query)}`)
-        .then(res => res.json())
-        .then(data => {
-          list.innerHTML = "";
-          data.forEach(item => {
-            const li = document.createElement("li");
-            li.textContent = `${item.name}, ${item.country}`;
-            li.addEventListener("click", () => {
-              input.value = item.name;
-              list.innerHTML = "";
-              list.style.display = "none";
+        timeout = setTimeout(() => {
+            fetch(`/api/geocode?q=${encodeURIComponent(query)}`)
+            .then(res => res.json())
+            .then(data => {
+                list.innerHTML = "";
+                data.forEach(item => {
+                    const li = document.createElement("li");
+                    li.textContent = `${item.name}, ${item.country}`;
+                    li.addEventListener("click", () => {
+                        input.value = item.name;
+                        list.innerHTML = "";
+                        list.style.display = "none";
+                    });
+                    list.appendChild(li);
+                });
             });
-            list.appendChild(li);
-          });
-        });
-    }, 100);
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".wettervorhersage-container")) {
-      list.innerHTML = "";
-    }
-  });
+        }, 100);
+    });
+    
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".wettervorhersage-container")) {
+            list.innerHTML = "";
+        }
+    });
 }

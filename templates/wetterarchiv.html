@@ -9,7 +9,7 @@
                         <p class="abfrage-label">Abfrage starten</p>
                         <br>
                     <label for="stationInput">📍 Wetterstation:</label>
-                        <input type="text" id="stationInput" list="stationenList" placeholder="Ort eingeben oder wählen …" required>
+                        <input type="text" id="stationInput" list="stationenList" title="Ort eingeben oder wählen" placeholder="Ort eingeben oder wählen …" required>
                         <datalist id="stationenList">
                         {% for station in stationen %}
                             <option value="{{station.STANAME}}" data-staid="{{station.STAID}}"></option>
